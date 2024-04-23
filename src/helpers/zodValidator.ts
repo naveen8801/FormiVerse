@@ -5,7 +5,7 @@ export const validateDataForZodSchema = async (
   try {
     const parseBody = await schema.parseAsync(data);
     return { success: true, errors: [] };
-  } catch (err) {
+  } catch (err: any) {
     if (err?.issues && err?.issues?.length > 0)
       return { success: false, errors: err.issues };
     else {
