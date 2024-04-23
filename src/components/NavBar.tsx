@@ -1,6 +1,18 @@
+"use client";
 import ThemeSwitcher from "@/helpers/ThemeSwitcher";
 import Link from "next/link";
 import React from "react";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
 const NavBar: React.FC = (): React.ReactElement => {
   return (
@@ -11,7 +23,18 @@ const NavBar: React.FC = (): React.ReactElement => {
           <span>Verse</span>
         </div>
       </Link>
-      <ThemeSwitcher />
+      <NavigationMenu>
+        <NavigationMenuItem className="list-none">
+          <Link href="/docs" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Login
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem className="list-none ml-4">
+          <ThemeSwitcher />
+        </NavigationMenuItem>
+      </NavigationMenu>
     </div>
   );
 };
