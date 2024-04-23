@@ -1,3 +1,4 @@
+import ThemeSwitcher from "@/helpers/ThemeSwitcher";
 import Link from "next/link";
 import React from "react";
 
@@ -10,6 +11,7 @@ const NavBar: React.FC = (): React.ReactElement => {
           <span>Verse</span>
         </div>
       </Link>
+      <ThemeSwitcher />
     </div>
   );
 };
