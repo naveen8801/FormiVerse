@@ -3,18 +3,22 @@ import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 const { z } = require("zod");
-import { loginFormSchema } from "@/validation/loginForm";
+import { signUpFormSchema } from "@/validation/signUpForm";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import toast from "react-hot-toast";
 
 interface IFormData {
   username: string;
+  fullname: string;
+  email: string;
   password: string;
 }
 
-const LoginForm: React.FC = (props: any): React.ReactElement => {
+const SignInForm: React.FC = (): React.ReactElement => {
   const [formData, setFormData] = useState<IFormData>({
     username: "",
+    email: "",
+    fullname: "",
     password: "",
   });
 
@@ -25,7 +29,7 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
   const handleSubmit = async () => {
     const { success, errors } = await validateDataForZodSchema(
       formData,
-      loginFormSchema
+      signUpFormSchema
     );
     if (!success) {
       let messages = errors?.map((e) => e.message);
@@ -38,15 +42,31 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
     <div className="flex flex-col gap-4 w-full md:w-1/3">
       <div className="space-y-2">
         <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 ">
-          Login to your account
+          Create an account
         </h2>
         <p className="text-sm text-muted-foreground">
-          Enter your username/email and password below to login to your account.
+          Enter following details to create your account.
         </p>
       </div>
       <Input
-        value={formData.username}
+        value={formData.fullname}
         type="text"
+        placeholder="Fullname"
+        onChange={({ target }) => {
+          setFormData({ ...formData, fullname: target.value });
+        }}
+      />
+      <Input
+        value={formData.email}
+        type="email"
+        placeholder="Email"
+        onChange={({ target }) => {
+          setFormData({ ...formData, email: target.value });
+        }}
+      />
+      <Input
+        value={formData.username}
+        type="email"
         placeholder="Username"
         onChange={({ target }) => {
           setFormData({ ...formData, username: target.value });
@@ -65,4 +85,4 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
   );
 };
 
-export default LoginForm;
+export default SignInForm;

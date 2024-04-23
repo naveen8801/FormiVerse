@@ -1,6 +1,6 @@
 const { z } = require("zod");
 
-export const loginFormSchema = z.object({
+export const signUpFormSchema = z.object({
   username: z
     .string({ required_error: "Username is required" })
     .trim()
@@ -18,6 +18,7 @@ export const loginFormSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
     .trim()
+    .email("This is not a valid email.")
     .min(3, {
       message: "Email must be at least 3 chars",
     })

@@ -25,9 +25,16 @@ const NavBar: React.FC = (): React.ReactElement => {
       </Link>
       <NavigationMenu>
         <NavigationMenuItem className="list-none">
+          <Link href="/signin" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Sign Up
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem className="list-none">
           <Link href="/login" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Login
+              Sign In
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
