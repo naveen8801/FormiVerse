@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+const { z } = require("zod");
+import { loginFormSchema } from "@/validation/loginForm";
+import { validateDataForZodSchema } from "@/helpers/zodValidator";
 
 interface IFormData {
   username: string;
@@ -14,6 +17,14 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
     password: "",
   });
 
+  const handleSubmit = async () => {
+    const { success, errors } = await validateDataForZodSchema(
+      formData,
+      loginFormSchema
+    );
+    console.log(success, errors);
+  };
+
   return (
     <div className="flex flex-col gap-4 w-full md:w-1/3">
       <Input
@@ -25,14 +36,14 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
         }}
       />
       <Input
-        value={formData.username}
+        value={formData.password}
         type="password"
         placeholder="Password"
         onChange={({ target }) => {
           setFormData({ ...formData, password: target.value });
         }}
       />
-      <Button>Login</Button>
+      <Button onClick={handleSubmit}>Login</Button>
     </div>
   );
 };
