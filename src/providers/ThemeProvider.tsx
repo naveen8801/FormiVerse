@@ -17,7 +17,12 @@ const MyThemeProvider: React.FC<IProp> = ({ children }): React.ReactElement => {
     return <>{children}</>;
   }
   return (
-    <ThemeProvider enableSystem={true} attribute="class">
+    <ThemeProvider
+      enableSystem={true}
+      attribute="class"
+      defaultTheme="system"
+      disableTransitionOnChange
+    >
       {children}
     </ThemeProvider>
   );
