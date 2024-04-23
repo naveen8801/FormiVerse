@@ -31,6 +31,14 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
 
   return (
     <div className="flex flex-col gap-4 w-full md:w-1/3">
+      <div className="space-y-2">
+        <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 ">
+          Login to your account
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Enter your username/email and password below to login to your account.
+        </p>
+      </div>
       <Input
         value={formData.username}
         type="text"
