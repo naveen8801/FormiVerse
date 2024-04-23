@@ -1,3 +1,11 @@
+/**
+ * Validates data against a Zod schema.
+ *
+ * @param {any} data - The data to validate.
+ * @param {any} schema - The Zod schema to validate against.
+ * @return {Promise<{ success: boolean; errors: any[] }>} The validation result indicating success and any errors.
+ */
+
 export const validateDataForZodSchema = async (
   data: any,
   schema: any

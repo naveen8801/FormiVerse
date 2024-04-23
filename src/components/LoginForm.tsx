@@ -17,6 +17,10 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
     password: "",
   });
 
+  /**
+   * Handles the form submission by validating the form data against a Zod schema.
+   *
+   */
   const handleSubmit = async () => {
     const { success, errors } = await validateDataForZodSchema(
       formData,
