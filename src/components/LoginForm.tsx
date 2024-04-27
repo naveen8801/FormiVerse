@@ -16,6 +16,7 @@ interface IFormData {
 
 const LoginForm: React.FC = (props: any): React.ReactElement => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>({
     username: "",
     password: "",
@@ -26,6 +27,7 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
    *
    */
   const handleSubmit = async () => {
+    setIsLoading(true);
     const { success, errors } = await validateDataForZodSchema(
       formData,
       loginFormSchema
@@ -33,6 +35,7 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
     if (!success) {
       let messages = errors?.map((e) => e.message);
       toast.error(messages?.join(", "));
+      setIsLoading(false);
       return;
     }
     const res = await signIn("credentials", {
@@ -42,9 +45,11 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
     });
     if (res?.error) {
       toast.error(res?.error);
+      setIsLoading(false);
       return;
     }
     toast.success("Login successful");
+    setIsLoading(false);
     router.push("/dashboard");
   };
 
@@ -74,7 +79,9 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
           setFormData({ ...formData, password: target.value });
         }}
       />
-      <Button onClick={handleSubmit}>Login</Button>
+      <Button disabled={isLoading} onClick={handleSubmit}>
+        Login
+      </Button>
     </div>
   );
 };

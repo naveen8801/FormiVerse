@@ -16,6 +16,7 @@ interface IFormData {
 }
 
 const SignUpForm: React.FC = (): React.ReactElement => {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>({
     username: "",
     email: "",
@@ -28,6 +29,7 @@ const SignUpForm: React.FC = (): React.ReactElement => {
    *
    */
   const handleSubmit = async () => {
+    setIsLoading(true);
     const { success, errors } = await validateDataForZodSchema(
       formData,
       signUpFormSchema
@@ -35,16 +37,19 @@ const SignUpForm: React.FC = (): React.ReactElement => {
     if (!success) {
       let messages = errors?.map((e) => e.message);
       toast.error(messages?.join(", "));
+      setIsLoading(false);
       return;
     }
     const { msg, error } = await handleUserSignUp(formData);
     if (error) {
       toast.error(error);
+      setIsLoading(false);
       return;
     }
     if (msg) {
       toast.success(msg);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -89,7 +94,9 @@ const SignUpForm: React.FC = (): React.ReactElement => {
           setFormData({ ...formData, password: target.value });
         }}
       />
-      <Button onClick={handleSubmit}>Login</Button>
+      <Button disabled={isLoading} onClick={handleSubmit}>
+        Login
+      </Button>
     </div>
   );
 };
