@@ -14,7 +14,7 @@ import { verifyPassword } from "./helpers/passwordManager";
 declare module "next-auth" {
   interface User {
     // Add your additional properties here:
-    id?: string | null;
+    _id?: string | null;
     username?: string | null;
   }
 }
@@ -60,6 +60,20 @@ export const config = {
       },
     }),
   ],
+  callbacks: {
+    async session({ session, user, token }) {
+      //   session.user.id = token.id;
+      //   session.user.name = token.name;
+      //   session.user.email = token.email;
+      return session;
+    },
+    async jwt({ token, user, account, profile }) {
+      if (user._id) {
+        token.id = user._id;
+      }
+      return token;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
 } satisfies NextAuthOptions;
 
