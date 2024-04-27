@@ -23,7 +23,7 @@ const NavBar: React.FC = (): React.ReactElement => {
           <span>Verse</span>
         </div>
       </Link>
-      <NavigationMenu>
+      <NavigationMenu className="gap-2">
         <NavigationMenuItem className="list-none">
           <Link href="/signin" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
