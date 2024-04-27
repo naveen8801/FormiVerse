@@ -6,6 +6,7 @@ const { z } = require("zod");
 import { loginFormSchema } from "@/validation/loginForm";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 interface IFormData {
   username: string;
@@ -30,8 +31,17 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
     if (!success) {
       let messages = errors?.map((e) => e.message);
       toast.error(messages?.join(", "));
+      return;
     }
-    console.log(success, errors);
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: formData.username,
+      password: formData.password,
+    });
+    if (res?.error) {
+      toast.error(res?.error);
+      return;
+    }
   };
 
   return (

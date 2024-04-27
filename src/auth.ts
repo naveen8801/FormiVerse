@@ -31,14 +31,13 @@ export const config = {
 
   providers: [
     CredentialsProvider({
-      name: "Credentials",
       credentials: {
         email: {},
         password: {},
       },
-      async authorize(credentials, req) {
-        const db: any = await connectDB();
-        if (db && credentials) {
+      async authorize(credentials: any, req) {
+        try {
+          await connectDB();
           const user = await User.findOne({
             email: credentials.email,
           });
@@ -48,15 +47,15 @@ export const config = {
               user.password
             );
             if (!res) {
-              //   res.status(404).json({ msg: 'Wrong Credentials' });
               throw new Error("Invalid Credentials !");
             } else {
               return user;
             }
           } else {
-            // res.status(404).json({ msg: 'No User Found' });
             throw new Error("No use found with this email !");
           }
+        } catch (error) {
+          throw new Error(error?.toString());
         }
       },
     }),
