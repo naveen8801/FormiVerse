@@ -14,8 +14,18 @@ import { verifyPassword } from "./helpers/passwordManager";
 declare module "next-auth" {
   interface User {
     // Add your additional properties here:
-    _id?: string | null;
-    username?: string | null;
+    _id: string | null;
+    username: string | null;
+    fullname: string | null;
+  }
+
+  interface Session {
+    // Add your additional properties here:
+    user: {
+      id: string | null;
+      username: string | null;
+      fullname: string | null;
+    };
   }
 }
 
@@ -65,16 +75,28 @@ export const config = {
     }),
   ],
   callbacks: {
-    async session({ session, user, token }) {
-      //   session.user.id = token.id;
-      //   session.user.name = token.name;
-      //   session.user.email = token.email;
+    async session({
+      session,
+      user,
+      token,
+    }: {
+      session: any;
+      user: any;
+      token: any;
+    }) {
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.username = token.username;
+        session.user.fullname = token.fullname;
+      }
       return session;
     },
-    async jwt({ token, user, account, profile }) {
-      //   if (user._id) {
-      //     token.id = user._id;
-      //   }
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user._id;
+        token.username = user.username;
+        token.fullname = user.fullname;
+      }
       return token;
     },
   },
