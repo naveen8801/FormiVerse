@@ -39,7 +39,6 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<Payment>[] = [
       );
     },
   },
-
   {
     accessorKey: "amount",
     header: () => <div className="text-right">Amount</div>,
