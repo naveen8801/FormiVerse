@@ -40,7 +40,7 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
     }
     const res = await signIn("credentials", {
       redirect: false,
-      email: formData.username,
+      username: formData.username,
       password: formData.password,
     });
     if (res?.error) {
@@ -66,7 +66,7 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
       <Input
         value={formData.username}
         type="text"
-        placeholder="Username"
+        placeholder="Username/Email"
         onChange={({ target }) => {
           setFormData({ ...formData, username: target.value });
         }}

@@ -32,14 +32,17 @@ export const config = {
   providers: [
     CredentialsProvider({
       credentials: {
-        email: {},
+        username: {},
         password: {},
       },
       async authorize(credentials: any, req) {
         try {
           await connectDB();
           const user = await User.findOne({
-            email: credentials.email,
+            $or: [
+              { email: credentials.username },
+              { username: credentials.username },
+            ],
           });
           if (user) {
             const res = await verifyPassword(

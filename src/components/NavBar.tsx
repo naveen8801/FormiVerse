@@ -30,7 +30,7 @@ const NavBar: React.FC = (): React.ReactElement => {
                 onClick={() => {
                   signOut();
                 }}
-                className={navigationMenuTriggerStyle()}
+                className={`${navigationMenuTriggerStyle()} cursor-pointer`}
               >
                 Sign Out
               </NavigationMenuLink>
