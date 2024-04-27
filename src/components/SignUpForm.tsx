@@ -36,13 +36,13 @@ const SignUpForm: React.FC = (): React.ReactElement => {
     );
     if (!success) {
       let messages = errors?.map((e) => e.message);
-      toast.error(messages?.join(", "));
+      toast.error(messages?.join(", "), { closeButton: true });
       setIsLoading(false);
       return;
     }
     const { msg, error } = await handleUserSignUp(formData);
     if (error) {
-      toast.error(error);
+      toast.error(error, { closeButton: true });
       setIsLoading(false);
       return;
     }

@@ -34,7 +34,7 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
     );
     if (!success) {
       let messages = errors?.map((e) => e.message);
-      toast.error(messages?.join(", "));
+      toast.error(messages?.join(", "), { closeButton: true });
       setIsLoading(false);
       return;
     }
@@ -44,7 +44,7 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
       password: formData.password,
     });
     if (res?.error) {
-      toast.error(res?.error);
+      toast.error(res?.error, { closeButton: true });
       setIsLoading(false);
       return;
     }
