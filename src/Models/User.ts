@@ -4,7 +4,7 @@ const User = new mongoose.Schema(
   {
     username: {
       type: String,
-      unique: true,
+      unique: [true, "Username already exist"],
       required: [true, "Username is required"],
     },
     fullname: {
@@ -14,7 +14,7 @@ const User = new mongoose.Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
-      unique: true,
+      unique: [true, "Email already exist"],
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please provide a valid email",
