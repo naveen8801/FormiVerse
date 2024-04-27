@@ -14,7 +14,7 @@ interface IFormData {
   password: string;
 }
 
-const SignInForm: React.FC = (): React.ReactElement => {
+const SignUpForm: React.FC = (): React.ReactElement => {
   const [formData, setFormData] = useState<IFormData>({
     username: "",
     email: "",
@@ -85,4 +85,4 @@ const SignInForm: React.FC = (): React.ReactElement => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
