@@ -13,6 +13,7 @@ import { signOut, useSession } from "next-auth/react";
 const NavBar: React.FC = (): React.ReactElement => {
   const session = useSession();
   const isAuthenticated = session.status === "authenticated" ? true : false;
+  const user = session?.data?.user;
 
   return (
     <div className="w-full h-28 box-border flex gap-8 justify-between items-center px-16">
@@ -35,6 +36,13 @@ const NavBar: React.FC = (): React.ReactElement => {
                 Sign Out
               </NavigationMenuLink>
             </NavigationMenuItem>
+            {user?.username && (
+              <NavigationMenuItem className="list-none">
+                <small className="text-sm font-bold leading-none">
+                  {`Hey ${user?.username} 👋`}
+                </small>
+              </NavigationMenuItem>
+            )}
           </>
         ) : (
           <>
