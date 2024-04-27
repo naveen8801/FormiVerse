@@ -1,3 +1,4 @@
+"use server";
 import User from "@/Models/User";
 import connectDB from "@/helpers/ConnectDB";
 import { hasPassword } from "@/helpers/passwordManager";
@@ -7,8 +8,9 @@ export const handleUserSignUp = async (data: {
   password: string;
   username: string;
   fullname: string;
-}) => {
+}): Promise<{ msg?: string; error?: string }> => {
   try {
+    await connectDB();
     const { username, email, password, fullname } = data;
     const userCheck = await User.findOne({ email: email });
     if (!userCheck) {

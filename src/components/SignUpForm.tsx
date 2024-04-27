@@ -6,6 +6,7 @@ const { z } = require("zod");
 import { signUpFormSchema } from "@/validation/signUpForm";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import toast from "react-hot-toast";
+import { handleUserSignUp } from "@/actions/authActions";
 
 interface IFormData {
   username: string;
@@ -34,8 +35,16 @@ const SignUpForm: React.FC = (): React.ReactElement => {
     if (!success) {
       let messages = errors?.map((e) => e.message);
       toast.error(messages?.join(", "));
+      return;
     }
-    console.log(success, errors);
+    const { msg, error } = await handleUserSignUp(formData);
+    if (error) {
+      toast.error(error);
+      return;
+    }
+    if (msg) {
+      toast.success(msg);
+    }
   };
 
   return (

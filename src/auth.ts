@@ -68,9 +68,9 @@ export const config = {
       return session;
     },
     async jwt({ token, user, account, profile }) {
-      if (user._id) {
-        token.id = user._id;
-      }
+      //   if (user._id) {
+      //     token.id = user._id;
+      //   }
       return token;
     },
   },

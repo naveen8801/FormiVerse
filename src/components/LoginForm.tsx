@@ -7,6 +7,7 @@ import { loginFormSchema } from "@/validation/loginForm";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface IFormData {
   username: string;
@@ -14,6 +15,7 @@ interface IFormData {
 }
 
 const LoginForm: React.FC = (props: any): React.ReactElement => {
+  const router = useRouter();
   const [formData, setFormData] = useState<IFormData>({
     username: "",
     password: "",
@@ -42,6 +44,8 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
       toast.error(res?.error);
       return;
     }
+    toast.success("Login successful");
+    router.push("/dashboard");
   };
 
   return (
