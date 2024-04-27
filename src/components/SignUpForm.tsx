@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 const { z } = require("zod");
 import { signUpFormSchema } from "@/validation/signUpForm";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { handleUserSignUp } from "@/actions/authActions";
 
 interface IFormData {

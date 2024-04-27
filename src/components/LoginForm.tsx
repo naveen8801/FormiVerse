@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 const { z } = require("zod");
 import { loginFormSchema } from "@/validation/loginForm";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 

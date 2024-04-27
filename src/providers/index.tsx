@@ -3,7 +3,7 @@ import LayoutProvider from "./LayoutProvider";
 import MyThemeProvider from "./ThemeProvider";
 import AuthProvider from "./AuthProvider";
 import { getServerSession } from "next-auth";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "@/components/ui/sonner";
 
 interface IProp {
   children?: React.ReactNode;
@@ -14,16 +14,12 @@ const MainProvider: React.FC<IProp> = async ({ children }) => {
 
   return (
     <div>
-      <Toaster
-        toastOptions={{
-          className: "dark:bg-black dark:text-slate-100",
-        }}
-      />
       <MyThemeProvider>
         <AuthProvider session={session}>
           <LayoutProvider>{children}</LayoutProvider>
         </AuthProvider>
       </MyThemeProvider>
+      <Toaster position="top-center" />
     </div>
   );
 };
