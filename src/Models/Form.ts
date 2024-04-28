@@ -14,6 +14,10 @@ export const Form = new mongoose.Schema(
       type: String,
       required: [true, "Form schema is required"],
     },
+    uiSchema: {
+      type: String,
+      default: "",
+    },
     author: {
       _id: {
         type: String,

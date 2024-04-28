@@ -5,6 +5,7 @@ import validator from "@rjsf/validator-ajv8";
 interface IProp {
   formData?: any;
   schema?: any;
+  uiSchema?: any;
   onChange?: (formData: any) => void;
   disabled?: boolean;
 }

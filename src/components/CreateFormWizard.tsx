@@ -28,6 +28,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     title: "",
     description: "",
     formSchema: "",
+    uiSchema: "",
     author: {
       username: user?.username,
       email: user?.email,
@@ -44,7 +45,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
    * @param {string | undefined} value - The new value of the editor.
    * @return {void} This function does not return anything.
    */
-  const handleEditorChange = (value: string | undefined) => {
+  const handleFormSchemaEditorChange = (value: string | undefined) => {
     if (value) {
       let formattedJSON = value;
       formattedJSON = JSON.stringify(JSON.parse(value), null, 4);
@@ -57,6 +58,19 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     }
   };
 
+  const handleUISchemaEditorChange = (value: string | undefined) => {
+    if (value) {
+      let formattedJSON = value;
+      formattedJSON = JSON.stringify(JSON.parse(value), null, 4);
+      try {
+      } catch (error) {}
+      setData((prev) => ({
+        ...prev,
+        uiSchema: JSON.stringify(JSON.parse(formattedJSON), null, 4),
+      }));
+    }
+  };
+
   const jsonSchema = useMemo(() => {
     try {
       return JSON.parse(data?.formSchema);
@@ -64,6 +78,15 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       return {};
     }
   }, [data?.formSchema]);
+
+  const uiSchema = useMemo(() => {
+    try {
+      if (data?.uiSchema) return JSON.parse(data?.uiSchema);
+      return {};
+    } catch (error) {
+      return {};
+    }
+  }, [data?.uiSchema]);
 
   // List of steps
   const STEPS = [
@@ -140,7 +163,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
                     height="20vh"
                     defaultLanguage="json"
                     value={data?.formSchema}
-                    onChange={handleEditorChange}
+                    onChange={handleFormSchemaEditorChange}
                   />
                 </CardContent>
               </Card>
@@ -153,18 +176,22 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
                     height="20vh"
                     theme="vs-dark"
                     defaultLanguage="json"
-                    value={data?.formSchema}
-                    onChange={handleEditorChange}
+                    value={data?.uiSchema}
+                    onChange={handleUISchemaEditorChange}
                   />
                 </CardContent>
               </Card>
             </div>
-            <Card className="col-span-1 h-[100%] overflow-auto">
+            <Card className="col-span-1 h-[90%] overflow-auto">
               <CardHeader>
                 <CardTitle>Form Preview</CardTitle>
               </CardHeader>
               <CardContent>
-                <JsonSchemaForm disabled schema={jsonSchema}></JsonSchemaForm>
+                <JsonSchemaForm
+                  disabled
+                  schema={jsonSchema}
+                  uiSchema={uiSchema}
+                ></JsonSchemaForm>
               </CardContent>
             </Card>
           </div>
@@ -185,7 +212,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     } else {
       return <></>;
     }
-  }, [currentStep, data, jsonSchema]);
+  }, [currentStep, data, jsonSchema, uiSchema]);
 
   // Footer as per current step
   const footer = useMemo(() => {

@@ -3,6 +3,7 @@ export interface IForm {
   title: string;
   description: string;
   formSchema: string;
+  uiSchema?: string;
   createdAt?: Date;
   modifiedAt?: Date;
   author: {
