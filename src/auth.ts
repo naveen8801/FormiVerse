@@ -6,7 +6,7 @@ import type {
 import type { NextAuthOptions, DefaultUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getServerSession } from "next-auth";
-import User from "./Models/User";
+import User from "./models/User";
 import connectDB from "./helpers/ConnectDB";
 import { verifyPassword } from "./helpers/passwordManager";
 // import sendEmail from "./utils/sendEmail";

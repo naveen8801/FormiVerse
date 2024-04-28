@@ -1,5 +1,8 @@
 export interface IForm {
   _id: string;
+  title: string;
+  description: string;
+  tags: string[];
   formSchema: string;
   createdAt: Date;
   modifiedAt: Date;

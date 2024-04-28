@@ -1,5 +1,5 @@
 "use server";
-import User from "@/Models/User";
+import User from "@/models/User";
 import connectDB from "@/helpers/ConnectDB";
 import { hasPassword } from "@/helpers/passwordManager";
 

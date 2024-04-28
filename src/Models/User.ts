@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Form } from "@/models/Form";
 
 const User = new mongoose.Schema(
   {
@@ -24,6 +25,7 @@ const User = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
     },
+    forms: [Form],
   },
   { timestamps: true }
 );

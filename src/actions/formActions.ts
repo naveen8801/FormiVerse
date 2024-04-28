@@ -1,4 +1,4 @@
-import User from "@/Models/User";
+import User from "@/models/User";
 import connectDB from "@/helpers/ConnectDB";
 
 export const handleGetUserForms = async (userId: string) => {
