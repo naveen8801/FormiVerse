@@ -193,7 +193,9 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
                   disabled
                   schema={jsonSchema}
                   uiSchema={uiSchema}
-                ></JsonSchemaForm>
+                >
+                  <></>
+                </JsonSchemaForm>
               </CardContent>
             </Card>
           </div>
