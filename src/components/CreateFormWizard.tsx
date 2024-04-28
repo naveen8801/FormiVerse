@@ -15,6 +15,8 @@ import { LuPlusSquare } from "react-icons/lu";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import Editor from "@monaco-editor/react";
+import JsonSchemaForm from "./JsonSchemaForm";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 interface IProp {
   user: any;
@@ -55,6 +57,14 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     }
   };
 
+  const jsonSchema = useMemo(() => {
+    try {
+      return JSON.parse(data?.formSchema);
+    } catch (error) {
+      return {};
+    }
+  }, [data?.formSchema]);
+
   // List of steps
   const STEPS = [
     {
@@ -94,7 +104,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
 
     if (currentStep === 0) {
       return (
-        <div className="h-full space-y-4">
+        <div className="space-y-4">
           {header}
           <div className="space-y-2">
             <Input
@@ -116,35 +126,66 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       );
     } else if (currentStep === 1) {
       return (
-        <div className="h-full space-y-4">
-          {header}{" "}
-          <div className="space-y-2">
-            <Editor
-              theme="vs-dark"
-              height="20vh"
-              defaultLanguage="json"
-              value={data?.formSchema}
-              onChange={handleEditorChange}
-            />
+        <div className="space-y-4">
+          {header}
+          <div className="grid grid-cols-2 h-full gap-2">
+            <div className="col-span-1 grid grid-rows-2 gap-2">
+              <Card className="row-span-1 h-full">
+                <CardHeader>
+                  <CardTitle>Form Schema</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Editor
+                    theme="vs-dark"
+                    height="20vh"
+                    defaultLanguage="json"
+                    value={data?.formSchema}
+                    onChange={handleEditorChange}
+                  />
+                </CardContent>
+              </Card>
+              <Card className="row-span-1 h-full">
+                <CardHeader>
+                  <CardTitle>UI Schema</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Editor
+                    height="20vh"
+                    theme="vs-dark"
+                    defaultLanguage="json"
+                    value={data?.formSchema}
+                    onChange={handleEditorChange}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+            <Card className="col-span-1 h-[100%] overflow-auto">
+              <CardHeader>
+                <CardTitle>Form Preview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <JsonSchemaForm disabled schema={jsonSchema}></JsonSchemaForm>
+              </CardContent>
+            </Card>
           </div>
         </div>
       );
     } else if (currentStep === 2) {
       return (
-        <div className="h-full">
+        <div className="">
           {header} <div></div>
         </div>
       );
     } else if (currentStep === 3) {
       return (
-        <div className="h-full">
+        <div className="">
           {header} <div></div>
         </div>
       );
     } else {
       return <></>;
     }
-  }, [currentStep, data]);
+  }, [currentStep, data, jsonSchema]);
 
   // Footer as per current step
   const footer = useMemo(() => {
@@ -218,7 +259,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
           Edit Profile
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-full sm:min-w-full md:min-w-full xl:min-w-[1200px]">
+      <DialogContent className="min-w-full sm:min-w-full md:min-w-full xl:min-w-[1200px] overflow-y-scroll max-h-[90vh]">
         {content}
         {footer}
       </DialogContent>
