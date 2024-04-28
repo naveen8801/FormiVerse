@@ -1,11 +1,11 @@
 export interface IForm {
-  _id: string;
+  _id?: string;
   title: string;
   description: string;
   tags: string[];
   formSchema: string;
-  createdAt: Date;
-  modifiedAt: Date;
+  createdAt?: Date;
+  modifiedAt?: Date;
   author: {
     username: string;
     email: string;

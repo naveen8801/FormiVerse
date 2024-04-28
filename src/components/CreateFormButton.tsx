@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 const CreateFormButton: React.FC = (): React.ReactElement => {
   return (
-    <Button className="" variant={"default"}>
+    <Button variant="default">
       <LuPlusSquare size={18} className="mr-2" />
       Create Form
     </Button>

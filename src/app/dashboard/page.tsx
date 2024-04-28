@@ -1,6 +1,7 @@
 import { handleGetUserForms } from "@/actions/formActions";
 import { auth, config } from "@/auth";
 import CreateFormButton from "@/components/CreateFormButton";
+import CreateFormWizard from "@/components/CreateFormWizard";
 import { DataTable } from "@/components/DateTable";
 import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
@@ -140,13 +141,13 @@ export default async function Dashboard() {
   return (
     <div className="w-full h-full">
       <div className="w-full flex flex-row items-center justify-end">
-        <CreateFormButton />
+        <CreateFormWizard user={session?.user}  />
       </div>
 
       {data?.length === 0 ? (
         <EmptyState
           text="No Forms Found, Create one by Clicking on Create Form button"
-          action={<CreateFormButton />}
+          action={<CreateFormWizard user={session?.user} />}
         />
       ) : (
         <DataTable columns={FORMS_TABLE_DEFINITION} data={payments} />
