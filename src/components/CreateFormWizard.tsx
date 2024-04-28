@@ -151,7 +151,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       return (
         <div className="space-y-4">
           {header}
-          <div className="grid grid-cols-2 h-full gap-2">
+          <div className="grid h-full gap-2 sm:grid-cols-1 xl:grid-cols-2">
             <div className="col-span-1 grid grid-rows-2 gap-2">
               <Card className="row-span-1 h-full">
                 <CardHeader>
@@ -161,6 +161,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
                   <Editor
                     theme="vs-dark"
                     height="20vh"
+                    className="w-full"
                     defaultLanguage="json"
                     value={data?.formSchema}
                     onChange={handleFormSchemaEditorChange}
@@ -174,6 +175,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
                 <CardContent>
                   <Editor
                     height="20vh"
+                    className="w-full"
                     theme="vs-dark"
                     defaultLanguage="json"
                     value={data?.uiSchema}
@@ -182,7 +184,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
                 </CardContent>
               </Card>
             </div>
-            <Card className="col-span-1 h-[90%] overflow-auto">
+            <Card className="col-span-1 h-[90%] overflow-auto w-full">
               <CardHeader>
                 <CardTitle>Form Preview</CardTitle>
               </CardHeader>
