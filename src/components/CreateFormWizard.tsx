@@ -14,6 +14,7 @@ import { IForm } from "@/types";
 import { LuPlusSquare } from "react-icons/lu";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import Editor from "@monaco-editor/react";
 
 interface IProp {
   user: any;
@@ -35,6 +36,26 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [data, setData] = useState<IForm>(DEFAULT_DATA);
 
+  /**
+   * Handles the change event of the editor.
+   *
+   * @param {string | undefined} value - The new value of the editor.
+   * @return {void} This function does not return anything.
+   */
+  const handleEditorChange = (value: string | undefined) => {
+    if (value) {
+      let formattedJSON = value;
+      formattedJSON = JSON.stringify(JSON.parse(value), null, 4);
+      try {
+      } catch (error) {}
+      setData((prev) => ({
+        ...prev,
+        formSchema: JSON.stringify(JSON.parse(formattedJSON), null, 4),
+      }));
+    }
+  };
+
+  // List of steps
   const STEPS = [
     {
       id: 0,
@@ -61,6 +82,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     },
   ];
 
+  // Content as per current step
   const content = useMemo(() => {
     const step = STEPS[currentStep];
     const header = (
@@ -94,8 +116,17 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       );
     } else if (currentStep === 1) {
       return (
-        <div className="h-full">
-          {header} <div></div>
+        <div className="h-full space-y-4">
+          {header}{" "}
+          <div className="space-y-2">
+            <Editor
+              theme="vs-dark"
+              height="20vh"
+              defaultLanguage="json"
+              value={data?.formSchema}
+              onChange={handleEditorChange}
+            />
+          </div>
         </div>
       );
     } else if (currentStep === 2) {
@@ -115,6 +146,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     }
   }, [currentStep, data]);
 
+  // Footer as per current step
   const footer = useMemo(() => {
     if (currentStep === 0) {
       return (
@@ -169,6 +201,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     }
   }, [currentStep]);
 
+  // Handle close dialog
   const handleClose = (isOpen: boolean) => {
     if (open === false) {
       setCurrentStep(0);
