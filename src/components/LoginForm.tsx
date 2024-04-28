@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 const { z } = require("zod");
 import { loginFormSchema } from "@/validation/loginForm";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
-import { toast } from "sonner";
+import { useToast } from "@/components/ui/use-toast";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -16,6 +16,7 @@ interface IFormData {
 
 const LoginForm: React.FC = (props: any): React.ReactElement => {
   const router = useRouter();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>({
     username: "",
@@ -34,7 +35,11 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
     );
     if (!success) {
       let messages = errors?.map((e) => e.message);
-      toast.error(messages?.join(", "), { closeButton: true });
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: messages?.join(", "),
+      });
       setIsLoading(false);
       return;
     }
@@ -44,11 +49,19 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
       password: formData.password,
     });
     if (res?.error) {
-      toast.error(res?.error, { closeButton: true });
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: res?.error,
+      });
       setIsLoading(false);
       return;
     }
-    toast.success("Login successful");
+    toast({
+      variant: "default",
+      title: "Success",
+      description: "Login successful",
+    });
     setIsLoading(false);
     router.push("/dashboard");
   };

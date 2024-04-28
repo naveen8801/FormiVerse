@@ -3,7 +3,7 @@ import LayoutProvider from "./LayoutProvider";
 import MyThemeProvider from "./ThemeProvider";
 import AuthProvider from "./AuthProvider";
 import { getServerSession } from "next-auth";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
 
 interface IProp {
   children?: React.ReactNode;
@@ -19,7 +19,7 @@ const MainProvider: React.FC<IProp> = async ({ children }) => {
           <LayoutProvider>{children}</LayoutProvider>
         </AuthProvider>
       </MyThemeProvider>
-      <Toaster position="top-center" />
+      <Toaster />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 const { z } = require("zod");
 import { signUpFormSchema } from "@/validation/signUpForm";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
-import { toast } from "sonner";
+import { useToast } from "@/components/ui/use-toast";
 import { handleUserSignUp } from "@/actions/authActions";
 
 interface IFormData {
@@ -16,6 +16,7 @@ interface IFormData {
 }
 
 const SignUpForm: React.FC = (): React.ReactElement => {
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<IFormData>({
     username: "",
@@ -36,18 +37,30 @@ const SignUpForm: React.FC = (): React.ReactElement => {
     );
     if (!success) {
       let messages = errors?.map((e) => e.message);
-      toast.error(messages?.join(", "), { closeButton: true });
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: messages?.join(", "),
+      });
       setIsLoading(false);
       return;
     }
     const { msg, error } = await handleUserSignUp(formData);
     if (error) {
-      toast.error(error, { closeButton: true });
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error,
+      });
       setIsLoading(false);
       return;
     }
     if (msg) {
-      toast.success(msg);
+      toast({
+        variant: "default",
+        title: "Success",
+        description: msg,
+      });
     }
     setIsLoading(false);
   };
