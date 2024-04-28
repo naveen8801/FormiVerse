@@ -138,7 +138,11 @@ export default async function Dashboard() {
   const { data, error } = await handleGetUserForms(session?.user?.id!);
 
   return (
-    <>
+    <div className="w-full h-full">
+      <div className="w-full flex flex-row items-center justify-end">
+        <CreateFormButton />
+      </div>
+
       {data?.length === 0 ? (
         <EmptyState
           text="No Forms Found, Create one by Clicking on Create Form button"
@@ -147,6 +151,6 @@ export default async function Dashboard() {
       ) : (
         <DataTable columns={FORMS_TABLE_DEFINITION} data={payments} />
       )}
-    </>
+    </div>
   );
 }
