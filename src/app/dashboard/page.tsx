@@ -1,6 +1,9 @@
 import { handleGetUserForms } from "@/actions/formActions";
 import { auth, config } from "@/auth";
+import CreateFormButton from "@/components/CreateFormButton";
 import { DataTable } from "@/components/DateTable";
+import EmptyState from "@/components/EmptyState";
+import { Button } from "@/components/ui/button";
 import { FORMS_TABLE_DEFINITION } from "@/constants";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -136,7 +139,14 @@ export default async function Dashboard() {
 
   return (
     <>
-      <DataTable columns={FORMS_TABLE_DEFINITION} data={payments} />
+      {data?.length === 0 ? (
+        <EmptyState
+          text="No Forms Found, Create one by Clicking on Create Form button"
+          action={<CreateFormButton />}
+        />
+      ) : (
+        <DataTable columns={FORMS_TABLE_DEFINITION} data={payments} />
+      )}
     </>
   );
 }
