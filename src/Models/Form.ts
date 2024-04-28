@@ -10,7 +10,6 @@ export const Form = new mongoose.Schema(
     description: {
       type: String,
     },
-    tags: [String],
     formSchema: {
       type: String,
       required: [true, "Form schema is required"],

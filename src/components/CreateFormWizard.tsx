@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { IForm } from "@/types";
-import CreateFormButton from "./CreateFormButton";
 import { LuPlusSquare } from "react-icons/lu";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 interface IProp {
   user: any;
@@ -23,7 +24,6 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
   const DEFAULT_DATA = {
     title: "",
     description: "",
-    tags: [],
     formSchema: "",
     author: {
       username: user?.username,
@@ -71,17 +71,49 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     );
 
     if (currentStep === 0) {
-      return <div>{header}</div>;
+      return (
+        <div className="h-full space-y-4">
+          {header}
+          <div className="space-y-2">
+            <Input
+              type="text"
+              placeholder="Title"
+              value={data.title}
+              onChange={(e) => setData({ ...data, title: e.target.value })}
+            />
+            <Textarea
+              rows={6}
+              placeholder="Description"
+              value={data.description}
+              onChange={(e) =>
+                setData({ ...data, description: e.target.value })
+              }
+            />
+          </div>
+        </div>
+      );
     } else if (currentStep === 1) {
-      return <div>{header}</div>;
+      return (
+        <div className="h-full">
+          {header} <div></div>
+        </div>
+      );
     } else if (currentStep === 2) {
-      return <div>{header}</div>;
+      return (
+        <div className="h-full">
+          {header} <div></div>
+        </div>
+      );
     } else if (currentStep === 3) {
-      return <div>{header}</div>;
+      return (
+        <div className="h-full">
+          {header} <div></div>
+        </div>
+      );
     } else {
       return <></>;
     }
-  }, [currentStep]);
+  }, [currentStep, data]);
 
   const footer = useMemo(() => {
     if (currentStep === 0) {
