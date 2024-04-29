@@ -8,6 +8,7 @@ interface IProp {
   uiSchema?: any;
   onChange?: (formData: any) => void;
   disabled?: boolean;
+  children?: React.ReactNode;
 }
 
 const JsonSchemaForm: React.FC<IProp> = (props: any): React.ReactElement => {
