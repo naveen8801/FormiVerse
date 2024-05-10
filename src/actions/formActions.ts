@@ -36,7 +36,6 @@ export const handleCreateForm = async (
   userId: string
 ): Promise<{ data?: any; error?: string }> => {
   try {
-    console.log("inn");
     await connectDB();
     const user = await User.findById(userId);
     if (!user) {
@@ -50,8 +49,6 @@ export const handleCreateForm = async (
     );
     const updatedForms = JSON.parse(JSON.stringify(data?.forms || []));
     const createdForm = updatedForms?.[updatedForms?.length - 1];
-
-    // TODO: verify if updatedForms?.[updatedForms?.length - 1] is returning saved form data along with _id or not
     return { data: createdForm };
   } catch (error) {
     return { error: error?.toString() };
