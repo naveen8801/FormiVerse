@@ -387,7 +387,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       <DialogTrigger asChild>
         <Button variant="default">
           <LuPlusSquare size={18} className="mr-2" />
-          Edit Profile
+          Create Form
         </Button>
       </DialogTrigger>
       <DialogContent className="min-w-full sm:min-w-full md:min-w-full xl:min-w-[1200px] overflow-y-scroll max-h-[90vh]">
