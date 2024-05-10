@@ -49,6 +49,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
   const [open, setOpen] = useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [data, setData] = useState<IForm>(DEFAULT_DATA);
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * Handles the change event of the editor.
@@ -83,6 +84,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
   };
 
   const handleFormCreation = async (data_: IForm) => {
+    setIsLoading(true);
     let payload = { ...data_ };
 
     // Base64 encode
@@ -106,6 +108,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
         title: "Uh oh! Something went wrong.",
         description: messages?.join(", "),
       });
+      setIsLoading(false);
       return;
     }
 
@@ -131,6 +134,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       });
       setCurrentStep((prev) => prev + 1);
     }
+    setIsLoading(false);
   };
 
   const jsonSchema = useMemo(() => {
@@ -335,6 +339,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
             Back
           </Button>
           <Button
+            disabled={isLoading}
             variant="default"
             onClick={() => {
               handleFormCreation(data);
@@ -366,7 +371,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
         </DialogFooter>
       );
     }
-  }, [currentStep]);
+  }, [currentStep, isLoading, data]);
 
   // Handle close dialog
   const handleClose = (isOpen: boolean) => {
