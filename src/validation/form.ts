@@ -16,6 +16,6 @@ export const formSchema = z.object({
     })
     .max(300, { message: "Description must not be more than 300 chars long" }),
   formSchema: z
-    .string({ required_error: "Form schema title is required" })
-    .trim(),
+    .string({ required_error: "Form schema is required" })
+    .min(1, { message: "Form schema is required" }),
 });

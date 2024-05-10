@@ -26,6 +26,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
+import { validateDataForZodSchema } from "@/helpers/zodValidator";
+import { formSchema } from "@/validation/form";
 
 interface IProp {
   user: any;
@@ -90,6 +92,21 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     // Base64 encode
     if (payload?.uiSchema) {
       payload.uiSchema = Base64.encode(payload.uiSchema);
+    }
+
+    const { success, errors } = await validateDataForZodSchema(
+      payload,
+      formSchema
+    );
+
+    if (!success) {
+      let messages = errors?.map((e) => e.message);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: messages?.join(", "),
+      });
+      return;
     }
 
     const { data, error } = await handleCreateForm(payload, user?.id);
