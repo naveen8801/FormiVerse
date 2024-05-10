@@ -17,6 +17,15 @@ import { Textarea } from "./ui/textarea";
 import Editor from "@monaco-editor/react";
 import JsonSchemaForm from "./JsonSchemaForm";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { handleCreateForm } from "@/actions/formActions";
+import { toast } from "./ui/use-toast";
+import { Base64 } from "js-base64";
+import { LuCopy } from "react-icons/lu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
 
 interface IProp {
   user: any;
@@ -71,6 +80,42 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     }
   };
 
+  const handleFormCreation = async (data_: IForm) => {
+    let payload = { ...data_ };
+
+    // Base64 encode
+    if (payload?.formSchema) {
+      payload.formSchema = Base64.encode(payload.formSchema);
+    }
+    // Base64 encode
+    if (payload?.uiSchema) {
+      payload.uiSchema = Base64.encode(payload.uiSchema);
+    }
+
+    const { data, error } = await handleCreateForm(payload, user?.id);
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error?.toString(),
+      });
+    }
+    if (data) {
+      setData((prev) => {
+        return {
+          ...prev,
+          _id: data?._id,
+        };
+      });
+      toast({
+        variant: "default",
+        title: "Success",
+        description: "Form created successfully !",
+      });
+      setCurrentStep((prev) => prev + 1);
+    }
+  };
+
   const jsonSchema = useMemo(() => {
     try {
       return JSON.parse(data?.formSchema);
@@ -114,6 +159,14 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
         "You have successfully created your form. You can see form details and responses by accessing it from dashboard",
     },
   ];
+
+  const handleCopyCommand = () => {
+    navigator.clipboard.writeText(
+      `<iframe src="${process.env.NEXT_PUBLIC_APP_URL!}/forms/${
+        data?._id
+      }" title="FormiVerse"></iframe>`
+    );
+  };
 
   // Content as per current step
   const content = useMemo(() => {
@@ -203,8 +256,31 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       );
     } else if (currentStep === 2) {
       return (
-        <div className="">
-          {header} <div></div>
+        <div className="space-y-4">
+          {header}
+
+          <div className="flex items-center justify-end cursor-pointer">
+            <Popover>
+              <PopoverTrigger>
+                <Button variant="outline" onClick={handleCopyCommand}>
+                  <LuCopy size={18} />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                align="start"
+                className="bg-muted px-[1rem] py-[0.5rem] text-sm rounded"
+              >
+                Copied!
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="space-y-2 w-full bg-muted px-[0.3rem] py-[1rem] rounded">
+            <code className="w-full font-mono text-sm font-semibold">
+              {`<iframe src="${process.env.NEXT_PUBLIC_APP_URL!}/forms/${
+                data?._id
+              }" title="FormiVerse"></iframe>`}
+            </code>
+          </div>
         </div>
       );
     } else if (currentStep === 3) {
@@ -243,7 +319,9 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
           </Button>
           <Button
             variant="default"
-            onClick={() => setCurrentStep((prev) => prev + 1)}
+            onClick={() => {
+              handleFormCreation(data);
+            }}
           >
             Create Form & Next
           </Button>

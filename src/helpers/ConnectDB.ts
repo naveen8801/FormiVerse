@@ -6,11 +6,10 @@ import mongoose from "mongoose";
  * @return {Promise<void>} A promise that resolves when the database is successfully connected, or rejects with an error if the connection fails.
  */
 const connectDB = async () => {
-  if (mongoose.connections[0].readyState) {
+  if (mongoose.connections?.[0]?.readyState) {
     return;
   }
   try {
-    console.log(process.env.MONGO_URI);
     await mongoose.connect(process.env.MONGO_URI!);
     console.log("MongoDB connection successful");
   } catch (error) {
