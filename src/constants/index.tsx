@@ -57,9 +57,7 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(form._id)}
-            >
+            <DropdownMenuItem onClick={() => {}}>
               See Responses
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => {}}>Delete</DropdownMenuItem>

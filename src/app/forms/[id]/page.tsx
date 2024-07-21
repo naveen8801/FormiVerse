@@ -1,9 +1,7 @@
 import React from "react";
 
-export default async function FormRenderer({
-  params,
-}: {
-  params: { id: string };
-}) {
-  return <div>{params?.id}</div>;
+export default function Form({ params }: { params: { id: string } }) {
+  return (
+    <div className="h-full display flex items-center justify-center"></div>
+  );
 }
