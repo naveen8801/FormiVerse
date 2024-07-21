@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,51 +11,42 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LuMoreHorizontal, LuArrowUpDown } from "react-icons/lu";
+import { IForm } from "@/types";
+import moment from "moment";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-export const FORMS_TABLE_DEFINITION: ColumnDef<Payment>[] = [
+export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
   {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "email",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Email
+          Title
           <LuArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "description",
+    header: "Description",
+  },
+  {
+    accessorKey: "createdAt",
+    header: () => <div>Created At</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+      const time: any = row.getValue("createdAt");
+      return <div className="font-medium">{moment(time).fromNow()}</div>;
     },
   },
   {
     id: "actions",
+    header: () => <div>Actions</div>,
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const form = row.original;
 
       return (
         <DropdownMenu>
@@ -66,16 +56,13 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<Payment>[] = [
               <LuMoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuContent>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(form._id)}
             >
-              Copy payment ID
+              See Responses
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {}}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

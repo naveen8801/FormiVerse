@@ -9,124 +9,6 @@ import { FORMS_TABLE_DEFINITION } from "@/constants";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-const payments: Payment[] = [
-  {
-    id: "728ed52f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "489e1d42",
-    amount: 125,
-    status: "processing",
-    email: "example@gmail.com",
-  },
-  {
-    id: "728ed522f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "728epp522f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "78ed5cd2f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "728d122f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "728ed52f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "489e1d42",
-    amount: 125,
-    status: "processing",
-    email: "example@gmail.com",
-  },
-  {
-    id: "728ed522f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "728epp522f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "78ed5cd2f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "728d122f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "728ed52f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "489e1d42",
-    amount: 125,
-    status: "processing",
-    email: "example@gmail.com",
-  },
-  {
-    id: "728ed522f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "728epp522f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "78ed5cd2f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "728d122f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-];
-
 export default async function Dashboard() {
   // Get session from server
   const session = await getServerSession(config);
@@ -138,19 +20,37 @@ export default async function Dashboard() {
 
   const { data, error } = await handleGetUserForms(session?.user?.id!);
 
+  const returnTableData = () => {
+    if (data) {
+      return data?.map((form) => {
+        return {
+          _id: form._id,
+          title: form?.title || "",
+          description: form?.description || "",
+          formSchema: form?.formSchema || "",
+          uiSchema: form?.uiSchema || "",
+          createdAt: form?.createdAt,
+          modifiedAt: form?.createdAt,
+          author: form?.author,
+        };
+      });
+    }
+    return [];
+  };
+
   return (
     <div className="w-full h-full">
       <div className="w-full flex flex-row items-center justify-end">
-        <CreateFormWizard user={session?.user}  />
+        <CreateFormWizard user={session?.user} />
       </div>
 
-      {data?.length === 0 ? (
+      {!data || data?.length === 0 ? (
         <EmptyState
           text="No Forms Found, Create one by Clicking on Create Form button"
           action={<CreateFormWizard user={session?.user} />}
         />
       ) : (
-        <DataTable columns={FORMS_TABLE_DEFINITION} data={payments} />
+        <DataTable columns={FORMS_TABLE_DEFINITION} data={returnTableData()} />
       )}
     </div>
   );
