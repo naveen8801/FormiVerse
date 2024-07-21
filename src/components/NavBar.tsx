@@ -10,7 +10,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import { signOut, useSession } from "next-auth/react";
 
-const NavBar: React.FC = (): React.ReactElement => {
+const NavBar: React.FC<{ hideAuthRelatedInfo?: boolean }> = (
+  props
+): React.ReactElement => {
+  const { hideAuthRelatedInfo = false } = props;
   const session = useSession();
   const isAuthenticated = session.status === "authenticated" ? true : false;
   const user = session?.data?.user;
@@ -24,42 +27,51 @@ const NavBar: React.FC = (): React.ReactElement => {
         </div>
       </Link>
       <NavigationMenu className="gap-2">
-        {isAuthenticated ? (
+        {!hideAuthRelatedInfo && (
           <>
-            <NavigationMenuItem className="list-none">
-              <NavigationMenuLink
-                onClick={() => {
-                  signOut();
-                }}
-                className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-              >
-                Sign Out
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            {user?.username && (
-              <NavigationMenuItem className="list-none">
-                <small className="text-sm font-bold leading-none">
-                  {`Hey ${user?.username} 👋`}
-                </small>
-              </NavigationMenuItem>
+            {" "}
+            {isAuthenticated ? (
+              <>
+                <NavigationMenuItem className="list-none">
+                  <NavigationMenuLink
+                    onClick={() => {
+                      signOut();
+                    }}
+                    className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+                  >
+                    Sign Out
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                {user?.username && (
+                  <NavigationMenuItem className="list-none">
+                    <small className="text-sm font-bold leading-none">
+                      {`Hey ${user?.username} 👋`}
+                    </small>
+                  </NavigationMenuItem>
+                )}
+              </>
+            ) : (
+              <>
+                <NavigationMenuItem className="list-none">
+                  <Link href="/signup" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Sign Up
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem className="list-none">
+                  <Link href="/login" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Sign In
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </>
             )}
-          </>
-        ) : (
-          <>
-            <NavigationMenuItem className="list-none">
-              <Link href="/signup" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Sign Up
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="list-none">
-              <Link href="/login" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Sign In
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
           </>
         )}
 
