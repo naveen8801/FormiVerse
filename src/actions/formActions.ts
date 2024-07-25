@@ -1,5 +1,5 @@
 "use server";
-import User from "@/models/User";
+import User from "./../models/User";
 import connectDB from "@/helpers/ConnectDB";
 import { IForm } from "@/types";
 import { revalidatePath } from "next/cache";
