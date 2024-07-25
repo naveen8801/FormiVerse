@@ -42,7 +42,7 @@ export const handleCreateForm = async (
     if (!user) {
       return { error: "User not found" };
     }
-    const formsPayload = [...user.forms, payload];
+    const formsPayload = [...user.forms, { ...payload, createdAt: Date.now() }];
     const data: any = await User.findOneAndUpdate(
       { _id: userId },
       { forms: formsPayload },
@@ -76,7 +76,11 @@ export const getFormById = async (userId: string, formId: string) => {
   }
 };
 
-export const getFormResponsesById = async (userId: string, formId: string) => {
+export const getFormResponsesById = async (
+  userId: string,
+  formId: string,
+  isReturnFormData: boolean = false
+) => {
   try {
     await connectDB();
     const user = await User.findById(userId);
@@ -89,7 +93,10 @@ export const getFormResponsesById = async (userId: string, formId: string) => {
     if (!form) {
       return { error: "Form not found" };
     }
-    return { data: form?.responses || [] };
+
+    return isReturnFormData
+      ? { data: { responses: form?.responses, form } }
+      : { data: form?.responses || [] };
   } catch (error) {
     return { error: error?.toString() };
   }

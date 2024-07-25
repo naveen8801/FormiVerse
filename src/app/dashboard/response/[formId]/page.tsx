@@ -7,6 +7,8 @@ import { Base64 } from "js-base64";
 import { getServerSession } from "next-auth";
 import { config } from "@/auth";
 import EmptyState from "@/components/EmptyState";
+import moment from "moment";
+import { FaClock } from "react-icons/fa6";
 
 export default async function FormResponse({
   params,
@@ -19,8 +21,9 @@ export default async function FormResponse({
   const session = await getServerSession(config);
 
   const { data, error } = await getFormResponsesById(
-    session?.user?._id,
-    formId
+    session?.user?.id,
+    formId,
+    true
   );
 
   if (error) {
@@ -39,11 +42,22 @@ export default async function FormResponse({
 
   return (
     <div className="w-full h-full">
-      {!data || data?.length === 0 ? (
+      <div className="w-full flex flex-row items-center justify-end gap-4">
+        <span></span>
+        <span className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1 px-0 py-0">
+          <FaClock size={16} className="text-gray-800 dark:text-white" />
+          Created {moment(data?.form?.createdAt).fromNow()}
+        </span>
+      </div>
+      {!data || data?.responses?.length === 0 ? (
         <EmptyState text="No responses Found" />
       ) : (
-        <></>
-        // <DataTable columns={FORMS_TABLE_DEFINITION} data={returnTableData()} />
+        <div>
+          {/* <DataTable
+            columns={FORMS_TABLE_DEFINITION}
+            data={returnTableData()}
+          /> */}
+        </div>
       )}
     </div>
   );
