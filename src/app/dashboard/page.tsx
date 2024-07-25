@@ -23,7 +23,7 @@ export default async function Dashboard() {
 
   const returnTableData = () => {
     if (data) {
-      return data?.map((form) => {
+      let res = data?.map((form) => {
         return {
           _id: form._id,
           title: form?.title || "",
@@ -36,6 +36,10 @@ export default async function Dashboard() {
           userId: session?.user?.id,
         };
       });
+      return res?.sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
     }
     return [];
   };
