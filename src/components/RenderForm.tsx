@@ -21,7 +21,7 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
     uiSchema = {},
     disabled = false,
   } = props;
-
+  const [data, setData] = useState<any>({});
   const handleFormSubmission = async (payload: any) => {
     const { data, error } = await handleSubmitFormResponse(
       userId,
@@ -36,6 +36,7 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
       });
     }
     if (data) {
+      setData({});
       toast({
         variant: "default",
         title: "Success",
@@ -66,6 +67,8 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
             liveValidate={true}
             schema={formSchema}
             uiSchema={uiSchema}
+            formData={data}
+            onChange={(evt: any) => setData(evt?.formData)}
             onSubmit={(evt: any) => {
               handleFormSubmission(evt?.formData);
             }}
