@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import JsonSchemaForm from "./JsonSchemaForm";
 import { handleSubmitFormResponse } from "@/actions/formActions";
@@ -22,6 +22,12 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
     disabled = false,
   } = props;
   const [data, setData] = useState<any>({});
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleFormSubmission = async (payload: any) => {
     const { data, error } = await handleSubmitFormResponse(
       userId,
@@ -47,34 +53,38 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
 
   return (
     <div className="w-full sm:w-full md:w-full xl:w-1/2">
-      <div className="text-right my-2">
-        <p className="text-sm text-gray-600">
-          Powered by{" "}
-          <a
-            href={process.env.NEXT_PUBLIC_APP_URL!}
-            target="_blank"
-            className="font-semibold text-blue-500 hover:text-blue-700"
-          >
-            FormiVerse
-          </a>
-        </p>
-      </div>
-      <Card className="row-span-1 h-full">
-        <CardContent>
-          <JsonSchemaForm
-            disabled={disabled}
-            liveOmit={true}
-            liveValidate={true}
-            schema={formSchema}
-            uiSchema={uiSchema}
-            formData={data}
-            onChange={(evt: any) => setData(evt?.formData)}
-            onSubmit={(evt: any) => {
-              handleFormSubmission(evt?.formData);
-            }}
-          ></JsonSchemaForm>
-        </CardContent>
-      </Card>
+      {mounted && (
+        <>
+          <div className="text-right my-2">
+            <p className="text-sm text-gray-600">
+              Powered by{" "}
+              <a
+                href={process.env.NEXT_PUBLIC_APP_URL!}
+                target="_blank"
+                className="font-semibold text-blue-500 hover:text-blue-700"
+              >
+                FormiVerse
+              </a>
+            </p>
+          </div>
+          <Card className="row-span-1 h-full">
+            <CardContent>
+              <JsonSchemaForm
+                disabled={disabled}
+                liveOmit={true}
+                liveValidate={true}
+                schema={formSchema}
+                uiSchema={uiSchema}
+                formData={data}
+                onChange={(evt: any) => setData(evt?.formData)}
+                onSubmit={(evt: any) => {
+                  handleFormSubmission(evt?.formData);
+                }}
+              ></JsonSchemaForm>
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
   );
 };
