@@ -62,7 +62,7 @@ export default async function Form({
   };
 
   return (
-    <div className="h-full display flex items-center justify-center">
+    <div className="h-full display flex items-center justify-center w-full ">
       <RenderForm
         formSchema={getSchemas()?.formSchema}
         uiSchema={getSchemas()?.uiSchema}
@@ -70,4 +70,4 @@ export default async function Form({
       />
     </div>
   );
-} 
+}
