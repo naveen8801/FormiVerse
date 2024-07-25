@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FORMS_TABLE_DEFINITION } from "@/constants";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { LuMoreHorizontal } from "react-icons/lu";
 
 export default async function Dashboard() {
   // Get session from server
@@ -32,6 +33,7 @@ export default async function Dashboard() {
           createdAt: form?.createdAt,
           modifiedAt: form?.createdAt,
           author: form?.author,
+          userId: session?.user?.id,
         };
       });
     }

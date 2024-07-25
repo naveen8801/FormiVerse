@@ -2,6 +2,7 @@
 import User from "@/models/User";
 import connectDB from "@/helpers/ConnectDB";
 import { IForm } from "@/types";
+import { revalidatePath } from "next/cache";
 
 /**
  * Retrieves the forms associated with a given user.
@@ -49,7 +50,75 @@ export const handleCreateForm = async (
     );
     const updatedForms = JSON.parse(JSON.stringify(data?.forms || []));
     const createdForm = updatedForms?.[updatedForms?.length - 1];
+    revalidatePath("/dashboard");
     return { data: createdForm };
+  } catch (error) {
+    return { error: error?.toString() };
+  }
+};
+
+export const getFormById = async (userId: string, formId: string) => {
+  try {
+    await connectDB();
+    const user = await User.findById(userId);
+    if (!user) {
+      return { error: "User not found" };
+    }
+    const form = user?.forms?.find(
+      (form: IForm) => form._id?.toString() === formId
+    );
+    if (!form) {
+      return { error: "Form not found" };
+    }
+    return { data: form };
+  } catch (error) {
+    return { error: error?.toString() };
+  }
+};
+
+export const getFormResponsesById = async (userId: string, formId: string) => {
+  try {
+    await connectDB();
+    const user = await User.findById(userId);
+    if (!user) {
+      return { error: "User not found" };
+    }
+    const form = user?.forms?.find(
+      (form: IForm) => form._id?.toString() === formId
+    );
+    if (!form) {
+      return { error: "Form not found" };
+    }
+    return { data: form?.responses || [] };
+  } catch (error) {
+    return { error: error?.toString() };
+  }
+};
+
+export const handleFormDeletion = async (userId: string, formId: string) => {
+  try {
+    await connectDB();
+    const user = await User.findById(userId);
+    if (!user) {
+      return { error: "User not found" };
+    }
+    const form = user?.forms?.find(
+      (form: IForm) => form._id?.toString() === formId
+    );
+    if (!form) {
+      return { error: "Form not found" };
+    }
+    const data: any = await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        forms: user?.forms.filter(
+          (form: IForm) => form._id?.toString() !== formId
+        ),
+      },
+      { new: true }
+    );
+    revalidatePath("/dashboard");
+    return { data: {} };
   } catch (error) {
     return { error: error?.toString() };
   }

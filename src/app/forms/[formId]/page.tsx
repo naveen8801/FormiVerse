@@ -1,7 +1,7 @@
 import React from "react";
 import notFoundImg from "../../../assets/images/not-found.svg";
 import Image from "next/image";
-import { handleGetUserForms } from "@/actions/formActions";
+import { getFormById } from "@/actions/formActions";
 import RenderForm from "@/components/RenderForm";
 import { Base64 } from "js-base64";
 
@@ -29,11 +29,9 @@ export default async function Form({
     );
   }
 
-  const { data, error } = await handleGetUserForms(userId);
-  console.log({ data, formId });
-  const form = data?.find((form) => form._id?.toString() === formId);
+  const { data, error } = await getFormById(userId, formId);
 
-  if (!form) {
+  if (error) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center gap-3 ">
         <p className="text-sm text-muted-foreground">{"Form Not Found"}</p>
@@ -50,8 +48,8 @@ export default async function Form({
   const getSchemas = () => {
     try {
       return {
-        formSchema: JSON.parse(Base64.decode(form?.formSchema)) || {},
-        uiSchema: JSON.parse(Base64.decode(form?.uiSchema || "")) || {},
+        formSchema: JSON.parse(Base64.decode(data?.formSchema)) || {},
+        uiSchema: JSON.parse(Base64.decode(data?.uiSchema || "")) || {},
       };
     } catch (error) {
       return {

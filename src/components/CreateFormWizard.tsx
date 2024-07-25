@@ -299,7 +299,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
             <code className="w-full font-mono text-sm font-semibold">
               {`<iframe src="${process.env.NEXT_PUBLIC_APP_URL!}/forms/${
                 data?._id
-              }" title="FormiVerse"></iframe>`}
+              }?userId=${user?.id}" title="FormiVerse"></iframe>`}
             </code>
           </div>
         </div>

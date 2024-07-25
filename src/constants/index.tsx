@@ -13,6 +13,9 @@ import {
 import { LuMoreHorizontal, LuArrowUpDown } from "react-icons/lu";
 import { IForm } from "@/types";
 import moment from "moment";
+import Link from "next/link";
+import { handleFormDeletion } from "@/actions/formActions";
+import { toast } from "@/components/ui/use-toast";
 
 export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
   {
@@ -46,8 +49,6 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
     header: () => <div>Actions</div>,
     enableHiding: false,
     cell: ({ row }) => {
-      const form = row.original;
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -57,10 +58,34 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => {}}>
-              See Responses
+            <Link href={`/dashboard/response/${row.original._id}`}>
+              <DropdownMenuItem>See Responses</DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem
+              onClick={async () => {
+                console.log(row);
+                const { data, error } = await handleFormDeletion(
+                  row.original.userId!,
+                  row.original._id!
+                );
+                if (error) {
+                  toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: error?.toString(),
+                  });
+                }
+                if (data) {
+                  toast({
+                    variant: "default",
+                    title: "Success",
+                    description: "Form deleted successfully",
+                  });
+                }
+              }}
+            >
+              Delete
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => {}}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

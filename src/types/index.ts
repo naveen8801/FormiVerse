@@ -1,5 +1,6 @@
 export interface IForm {
   _id?: string;
+  userId?: string;
   title: string;
   description: string;
   formSchema: string;
