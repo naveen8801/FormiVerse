@@ -89,9 +89,8 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             <DropdownMenuItem
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `<iframe src="${process.env.NEXT_PUBLIC_APP_URL!}/forms/${
-                    row.original?._id
-                  }?userId=${
+                  `<iframe width="500px" height="700px" src="${process.env
+                    .NEXT_PUBLIC_APP_URL!}/forms/${row.original?._id}?userId=${
                     row.original?.userId
                   }" title="FormiVerse"></iframe>`
                 );

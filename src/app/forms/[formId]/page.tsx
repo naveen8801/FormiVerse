@@ -60,7 +60,7 @@ export default async function Form({
   };
 
   return (
-    <div className="h-full display flex items-center justify-center w-full flex-col">
+    <div className="display flex items-center justify-center w-full flex-col">
       <RenderForm
         formSchema={getSchemas()?.formSchema}
         uiSchema={getSchemas()?.uiSchema}

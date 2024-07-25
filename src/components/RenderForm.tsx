@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { CardContent } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
 import JsonSchemaForm from "./JsonSchemaForm";
 
 interface IProp {
@@ -13,7 +13,7 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
   const { formSchema = {}, uiSchema = {}, disabled = false } = props;
   return (
     <div className="w-full sm:w-full md:w-full xl:w-1/2">
-      <div className="text-right px-6">
+      <div className="text-right my-2">
         <p className="text-sm text-gray-600">
           Powered by{" "}
           <a
@@ -25,15 +25,15 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
           </a>
         </p>
       </div>
-      <CardContent>
-        <JsonSchemaForm
-          disabled={disabled}
-          schema={formSchema}
-          uiSchema={uiSchema}
-        >
-          <></>
-        </JsonSchemaForm>
-      </CardContent>
+      <Card className="row-span-1 h-full">
+        <CardContent>
+          <JsonSchemaForm
+            disabled={disabled}
+            schema={formSchema}
+            uiSchema={uiSchema}
+          ></JsonSchemaForm>
+        </CardContent>
+      </Card>
     </div>
   );
 };
