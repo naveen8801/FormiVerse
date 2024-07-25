@@ -9,10 +9,11 @@ export default async function Form({
   params,
   searchParams,
 }: {
-  params: { id: string };
-  searchParams: { userId: string; formId: string; disabled?: string };
+  params: { formId: string };
+  searchParams: { userId: string; disabled?: string };
 }) {
-  const { userId, formId, disabled = false } = searchParams;
+  const { userId, disabled = false } = searchParams;
+  const formId = params?.formId;
 
   if (!userId || !formId) {
     return (
@@ -29,7 +30,8 @@ export default async function Form({
   }
 
   const { data, error } = await handleGetUserForms(userId);
-  const form = data?.find((form) => form._id === formId);
+  console.log({ data, formId });
+  const form = data?.find((form) => form._id?.toString() === formId);
 
   if (!form) {
     return (
@@ -68,4 +70,4 @@ export default async function Form({
       />
     </div>
   );
-}
+} 

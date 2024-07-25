@@ -12,7 +12,7 @@ interface IProp {
 const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
   const { formSchema = {}, uiSchema = {}, disabled = false } = props;
   return (
-    <div>
+    <div className="w-1/2">
       <CardContent>
         <JsonSchemaForm
           disabled={disabled}

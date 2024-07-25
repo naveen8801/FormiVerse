@@ -185,7 +185,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     navigator.clipboard.writeText(
       `<iframe src="${process.env.NEXT_PUBLIC_APP_URL!}/forms/${
         data?._id
-      }" title="FormiVerse"></iframe>`
+      }?userId=${user?.id}" title="FormiVerse"></iframe>`
     );
   };
 
