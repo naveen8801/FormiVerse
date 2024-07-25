@@ -94,9 +94,7 @@ export const getFormResponsesById = async (
       return { error: "Form not found" };
     }
 
-    return isReturnFormData
-      ? { data: { responses: form?.responses, form } }
-      : { data: form?.responses || [] };
+    return { data: form?.toJSON() };
   } catch (error) {
     return { error: error?.toString() };
   }
@@ -125,6 +123,42 @@ export const handleFormDeletion = async (userId: string, formId: string) => {
       { new: true }
     );
     revalidatePath("/dashboard");
+    return { data: {} };
+  } catch (error) {
+    return { error: error?.toString() };
+  }
+};
+
+export const handleSubmitFormResponse = async (
+  userId: string,
+  formId: string,
+  payload: any
+) => {
+  try {
+    await connectDB();
+    const user = await User.findById(userId);
+    if (!user) {
+      return { error: "User not found" };
+    }
+    const idx = user?.forms?.findIndex(
+      (form: IForm) => form._id?.toString() === formId
+    );
+    if (idx == -1) {
+      return { error: "Form not found" };
+    }
+
+    let newFormsArr = user?.forms;
+    newFormsArr[idx].responses = [
+      ...newFormsArr[idx].responses,
+      { data: payload, createdAt: Date.now() },
+    ];
+    const data: any = await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        forms: newFormsArr,
+      },
+      { new: true }
+    );
     return { data: {} };
   } catch (error) {
     return { error: error?.toString() };

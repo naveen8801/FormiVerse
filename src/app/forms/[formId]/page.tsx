@@ -65,6 +65,8 @@ export default async function Form({
         formSchema={getSchemas()?.formSchema}
         uiSchema={getSchemas()?.uiSchema}
         disabled={disabled ? true : false}
+        userId={userId}
+        formId={formId}
       />
     </div>
   );

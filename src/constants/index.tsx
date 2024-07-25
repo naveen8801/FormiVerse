@@ -17,6 +17,7 @@ import Link from "next/link";
 import { handleFormDeletion } from "@/actions/formActions";
 import { toast } from "@/components/ui/use-toast";
 import { generateEmbedCodeForForm } from "@/lib/utils";
+import { FaCopy } from "react-icons/fa6";
 
 export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
   {
@@ -123,7 +124,14 @@ export const RESPONSE_TABLE_DEFINITION: ColumnDef<IFormResponse>[] = [
     header: () => <div>Created At</div>,
     cell: ({ row }) => {
       const time: any = row.getValue("createdAt");
-      return <div className="font-medium">{moment(time).fromNow()}</div>;
+      return (
+        <div>
+          <strong>{moment(time).fromNow()}</strong>
+          <p className="text-slate-500 dark:text-slate-400">
+            {moment(time).toDate().toString()}
+          </p>
+        </div>
+      );
     },
   },
   {
@@ -132,7 +140,21 @@ export const RESPONSE_TABLE_DEFINITION: ColumnDef<IFormResponse>[] = [
     cell: ({ row }) => {
       const data: any = row.getValue("data");
       return (
-        <div className="p-4 bg-gray-900 text-white rounded-md dark:text-black dark:bg-white">
+        <div className="p-4 bg-gray-900 text-white rounded-md relative">
+          <div className="absolute top-0 right-0 p-4 z-10">
+            <FaCopy
+              className="cursor-pointer"
+              size={20}
+              onClick={() => {
+                navigator.clipboard.writeText(JSON.stringify(data));
+                toast({
+                  variant: "default",
+                  title: "Success",
+                  description: "Data Copied",
+                });
+              }}
+            />
+          </div>
           <pre className="overflow-x-auto">
             <code className="text-sm">{JSON.stringify(data, null, 4)}</code>
           </pre>

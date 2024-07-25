@@ -9,6 +9,9 @@ interface IProp {
   onChange?: (formData: any) => void;
   disabled?: boolean;
   children?: React.ReactNode;
+  liveOmit?: boolean;
+  liveValidate?: boolean;
+  onSubmit?: (evt: any) => void;
 }
 
 const JsonSchemaForm: React.FC<IProp> = (props: any): React.ReactElement => {

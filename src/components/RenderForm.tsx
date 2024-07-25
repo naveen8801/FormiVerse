@@ -1,16 +1,49 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import JsonSchemaForm from "./JsonSchemaForm";
+import { handleSubmitFormResponse } from "@/actions/formActions";
+import { toast } from "./ui/use-toast";
 
 interface IProp {
   formSchema: object;
   uiSchema: object;
   disabled?: boolean;
+  userId: string;
+  formId: string;
 }
 
 const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
-  const { formSchema = {}, uiSchema = {}, disabled = false } = props;
+  const {
+    userId,
+    formId,
+    formSchema = {},
+    uiSchema = {},
+    disabled = false,
+  } = props;
+
+  const handleFormSubmission = async (payload: any) => {
+    const { data, error } = await handleSubmitFormResponse(
+      userId,
+      formId,
+      payload
+    );
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error?.toString(),
+      });
+    }
+    if (data) {
+      toast({
+        variant: "default",
+        title: "Success",
+        description: "Response saved successfully",
+      });
+    }
+  };
+
   return (
     <div className="w-full sm:w-full md:w-full xl:w-1/2">
       <div className="text-right my-2">
@@ -29,8 +62,13 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
         <CardContent>
           <JsonSchemaForm
             disabled={disabled}
+            liveOmit={true}
+            liveValidate={true}
             schema={formSchema}
             uiSchema={uiSchema}
+            onSubmit={(evt: any) => {
+              handleFormSubmission(evt?.formData);
+            }}
           ></JsonSchemaForm>
         </CardContent>
       </Card>
