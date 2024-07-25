@@ -76,11 +76,7 @@ export const getFormById = async (userId: string, formId: string) => {
   }
 };
 
-export const getFormResponsesById = async (
-  userId: string,
-  formId: string,
-  isReturnFormData: boolean = false
-) => {
+export const getFormResponsesById = async (userId: string, formId: string) => {
   try {
     await connectDB();
     const user = await User.findById(userId);

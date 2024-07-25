@@ -28,11 +28,7 @@ export default async function FormResponse({
     redirect("/login");
   }
 
-  const { data, error } = await getFormResponsesById(
-    session?.user?.id,
-    formId,
-    true
-  );
+  const { data, error } = await getFormResponsesById(session?.user?.id, formId);
 
   if (error) {
     return (
@@ -62,7 +58,13 @@ export default async function FormResponse({
       ) : (
         <DataTable
           columns={RESPONSE_TABLE_DEFINITION}
-          data={data?.responses || []}
+          data={
+            data?.responses?.sort(
+              (a: any, b: any) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            ) || []
+          }
         />
       )}
     </div>
