@@ -28,6 +28,7 @@ import {
 } from "@radix-ui/react-popover";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import { formSchema } from "@/validation/form";
+import { generateEmbedCodeForForm } from "@/lib/utils";
 
 interface IProp {
   user: any;
@@ -298,10 +299,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
           </div>
           <div className="space-y-2 w-full bg-muted px-[0.3rem] py-[1rem] rounded">
             <code className="w-full font-mono text-sm font-semibold">
-              {`<iframe width="500px" height="700px" src="${process.env
-                .NEXT_PUBLIC_APP_URL!}/forms/${data?._id}?userId=${
-                user?.id
-              }" title="FormiVerse"></iframe>`}
+              {generateEmbedCodeForForm(user?.id, data?._id!)}
             </code>
           </div>
         </div>

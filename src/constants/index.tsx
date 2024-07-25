@@ -16,6 +16,7 @@ import moment from "moment";
 import Link from "next/link";
 import { handleFormDeletion } from "@/actions/formActions";
 import { toast } from "@/components/ui/use-toast";
+import { generateEmbedCodeForForm } from "@/lib/utils";
 
 export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
   {
@@ -89,10 +90,10 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             <DropdownMenuItem
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `<iframe width="500px" height="700px" src="${process.env
-                    .NEXT_PUBLIC_APP_URL!}/forms/${row.original?._id}?userId=${
-                    row.original?.userId
-                  }" title="FormiVerse"></iframe>`
+                  generateEmbedCodeForForm(
+                    row.original?.userId!,
+                    row.original?._id!
+                  )
                 );
                 toast({
                   variant: "default",
@@ -103,6 +104,12 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             >
               Copy Embed Code
             </DropdownMenuItem>
+            <Link
+              href={`/forms/${row.original?._id}?userId=${row.original?.userId}&disabled=true`}
+              target="_blank"
+            >
+              <DropdownMenuItem>Preview Form</DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       );
