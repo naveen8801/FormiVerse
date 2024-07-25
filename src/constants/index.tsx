@@ -86,6 +86,24 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             >
               Delete
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `<iframe src="${process.env.NEXT_PUBLIC_APP_URL!}/forms/${
+                    row.original?._id
+                  }?userId=${
+                    row.original?.userId
+                  }" title="FormiVerse"></iframe>`
+                );
+                toast({
+                  variant: "default",
+                  title: "Success",
+                  description: "Copied Embed Code",
+                });
+              }}
+            >
+              Copy Embed Code
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -107,7 +125,13 @@ export const RESPONSE_TABLE_DEFINITION: ColumnDef<IFormResponse>[] = [
     header: () => <div>Data</div>,
     cell: ({ row }) => {
       const data: any = row.getValue("data");
-      return <div className="font-medium">{JSON.stringify(data, null, 4)}</div>;
+      return (
+        <div className="p-4 bg-gray-900 text-white rounded-md dark:text-black dark:bg-white">
+          <pre className="overflow-x-auto">
+            <code className="text-sm">{JSON.stringify(data, null, 4)}</code>
+          </pre>
+        </div>
+      );
     },
   },
 ];
