@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LuMoreHorizontal, LuArrowUpDown } from "react-icons/lu";
-import { IForm } from "@/types";
+import { IForm, IFormResponse } from "@/types";
 import moment from "moment";
 import Link from "next/link";
 import { handleFormDeletion } from "@/actions/formActions";
@@ -89,6 +89,25 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
           </DropdownMenuContent>
         </DropdownMenu>
       );
+    },
+  },
+];
+
+export const RESPONSE_TABLE_DEFINITION: ColumnDef<IFormResponse>[] = [
+  {
+    accessorKey: "createdAt",
+    header: () => <div>Created At</div>,
+    cell: ({ row }) => {
+      const time: any = row.getValue("createdAt");
+      return <div className="font-medium">{moment(time).fromNow()}</div>;
+    },
+  },
+  {
+    accessorKey: "data",
+    header: () => <div>Data</div>,
+    cell: ({ row }) => {
+      const data: any = row.getValue("data");
+      return <div className="font-medium">{JSON.stringify(data, null, 4)}</div>;
     },
   },
 ];

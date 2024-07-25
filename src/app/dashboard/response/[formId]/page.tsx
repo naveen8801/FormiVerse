@@ -9,6 +9,9 @@ import { config } from "@/auth";
 import EmptyState from "@/components/EmptyState";
 import moment from "moment";
 import { FaClock } from "react-icons/fa6";
+import { DataTable } from "@/components/DateTable";
+import { RESPONSE_TABLE_DEFINITION } from "@/constants";
+import { IFormResponse } from "@/types";
 
 export default async function FormResponse({
   params,
@@ -40,6 +43,16 @@ export default async function FormResponse({
     );
   }
 
+  const returnTableData = () => {
+    let rows: IFormResponse[] = [];
+    data?.responses?.forEach((res: IFormResponse) => {
+      rows.push({
+        ...res,
+      });
+    });
+    return rows;
+  };
+
   return (
     <div className="w-full h-full">
       <div className="w-full flex flex-row items-center justify-end gap-4">
@@ -53,10 +66,10 @@ export default async function FormResponse({
         <EmptyState text="No responses Found" />
       ) : (
         <div>
-          {/* <DataTable
-            columns={FORMS_TABLE_DEFINITION}
+          <DataTable
+            columns={RESPONSE_TABLE_DEFINITION}
             data={returnTableData()}
-          /> */}
+          />
         </div>
       )}
     </div>
