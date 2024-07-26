@@ -12,6 +12,9 @@ import { FaClock } from "react-icons/fa6";
 import { DataTable } from "@/components/DateTable";
 import { RESPONSE_TABLE_DEFINITION } from "@/constants";
 import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { FaEye } from "react-icons/fa6";
+import Link from "next/link";
 
 export default async function FormResponse({
   params,
@@ -46,8 +49,15 @@ export default async function FormResponse({
 
   return (
     <div className="w-full h-full">
-      <div className="w-full flex flex-row items-center justify-end gap-4">
-        <span></span>
+      <div className="w-full flex flex-row items-center justify-end gap-8">
+        <Link
+          href={`/forms/${formId}?userId=${session?.user?.id}&disabled=true`}
+          target="_blank"
+        >
+          <Button>
+            <FaEye size={16} style={{ marginRight: "6px" }} /> Preview
+          </Button>
+        </Link>
         <span className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1 px-0 py-0">
           <FaClock size={16} className="text-gray-800 dark:text-white" />
           Created {moment(data?.createdAt).fromNow()}
