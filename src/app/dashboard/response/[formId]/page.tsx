@@ -15,6 +15,7 @@ import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { FaEye } from "react-icons/fa6";
 import Link from "next/link";
+import DownloadResponseButton from "@/components/DownloadResponseButton";
 
 export default async function FormResponse({
   params,
@@ -50,6 +51,15 @@ export default async function FormResponse({
   return (
     <div className="w-full h-full">
       <div className="w-full flex flex-row items-center justify-end gap-8">
+        <DownloadResponseButton
+          data={
+            data?.responses?.sort(
+              (a: any, b: any) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            ) || []
+          }
+        />
         <Link
           href={`/forms/${formId}?userId=${session?.user?.id}&disabled=true`}
           target="_blank"
