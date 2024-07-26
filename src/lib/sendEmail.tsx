@@ -3,6 +3,7 @@ import * as nodemailer from "nodemailer";
 import { render } from "@react-email/render";
 import WelcomeEmail from "./emailTemplates/WelcomeEmail";
 import * as React from "react";
+import ResponseReceivedTemplate from "./emailTemplates/ResponseRecievedEmail";
 
 /**
  * Returns the email subject based on the type.
@@ -15,7 +16,7 @@ const getEmailSubjectBasedOnType = (type: "WELCOME" | "NEW_RESPONSE") => {
     case "WELCOME":
       return "Welcome to FormiVerse 🚀";
     case "NEW_RESPONSE":
-      return "New Response";
+      return "New Response Received";
     default:
       return "";
   }
@@ -32,12 +33,14 @@ const getEmailBodyBasedOnType = (
   data: any,
   type: "WELCOME" | "NEW_RESPONSE"
 ): any => {
+  const { name, form, response } = data;
   switch (type) {
     case "WELCOME":
-      const { name } = data;
       return render(<WelcomeEmail name={name} />);
     case "NEW_RESPONSE":
-      return "New Response!";
+      return render(
+        <ResponseReceivedTemplate name={name} form={form} response={response} />
+      );
     default:
       return "";
   }

@@ -3,6 +3,7 @@ import User from "@/models/User";
 import connectDB from "@/helpers/ConnectDB";
 import { IForm } from "@/types";
 import { revalidatePath } from "next/cache";
+import sendEmail from "@/lib/sendEmail";
 
 /**
  * Retrieves the forms associated with a given user.
@@ -143,18 +144,38 @@ export const handleSubmitFormResponse = async (
       return { error: "Form not found" };
     }
 
+    const responsePayload = { data: payload, createdAt: Date.now() };
+
     let newFormsArr = user?.forms;
     newFormsArr[idx].responses = [
       ...newFormsArr[idx].responses,
-      { data: payload, createdAt: Date.now() },
+      responsePayload,
     ];
-    const data: any = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { _id: userId },
       {
         forms: newFormsArr,
       },
       { new: true }
-    );
+    )
+      .then(async () => {
+        // Send email for response notification
+        const { msg, error } = await sendEmail({
+          receiverEmail: user?.email,
+          data: {
+            name: user?.fullname,
+            form: newFormsArr?.[idx],
+            response: responsePayload,
+          },
+          emailType: "NEW_RESPONSE",
+        });
+        console.log({ msg, error });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    revalidatePath("/dashboard");
+
     return { data: {} };
   } catch (error) {
     return { error: error?.toString() };
