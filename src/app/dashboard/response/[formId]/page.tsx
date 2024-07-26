@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { FaEye } from "react-icons/fa6";
 import Link from "next/link";
 import DownloadResponseButton from "@/components/DownloadResponseButton";
+import { IFormResponse } from "@/types";
 
 export default async function FormResponse({
   params,
@@ -48,18 +49,29 @@ export default async function FormResponse({
     );
   }
 
+  const getCleanedResponseData = (responses: IFormResponse[]) => {
+    let res: any = [];
+    responses?.forEach((response) => {
+      let obj = {
+        createdAt: moment(response?.createdAt).toDate().toString(),
+        data: response?.data,
+      };
+    });
+    return res;
+  };
+
   return (
     <div className="w-full h-full">
       <div className="w-full flex flex-row items-center justify-end gap-8">
         <DownloadResponseButton
           filename={formId}
-          data={
+          data={getCleanedResponseData(
             data?.responses?.sort(
               (a: any, b: any) =>
                 new Date(b.createdAt).getTime() -
                 new Date(a.createdAt).getTime()
             ) || []
-          }
+          )}
         />
         <Link
           href={`/forms/${formId}?userId=${session?.user?.id}&disabled=true`}
