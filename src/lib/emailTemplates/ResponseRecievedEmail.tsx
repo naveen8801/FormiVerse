@@ -30,7 +30,7 @@ const ResponseReceivedTemplate: React.FC<Readonly<IProps>> = (
     <Html>
       <Head />
       <Preview>
-        A single place to create, edit &amp; manage your forms with easy
+        A single place to create, edit & manage your forms with easy integration
       </Preview>
       <Body style={main}>
         <Container style={container}>
