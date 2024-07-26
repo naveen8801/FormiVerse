@@ -65,7 +65,7 @@ export default async function FormResponse({
     <div className="w-full h-full">
       <div className="w-full flex flex-row items-center justify-end gap-8">
         <DownloadResponseButton
-          filename={formId}
+          filename={`Form Response-${formId}`}
           data={getCleanedResponseData(
             data?.responses?.sort(
               (a: any, b: any) =>
