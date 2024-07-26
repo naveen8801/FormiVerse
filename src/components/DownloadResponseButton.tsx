@@ -45,6 +45,46 @@ const DownloadResponseButton: React.FC<IProp> = (props): React.ReactElement => {
     link.parentNode!.removeChild(link);
   };
 
+  const generateAndDownloadCSVFile = (data: any[]) => {
+    // CSV data to be downloaded
+    const csvData = [["Created At", "Data"]];
+
+    for (let i = 0; i < data?.length; i++) {
+      csvData.push([data?.[i]?.createdAt, JSON.stringify(data?.[i]?.data)]);
+    }
+
+    // Function to escape double quotes in JSON string
+    const escapeJSONString = (str: string) => str.replace(/"/g, '""');
+
+    // Convert array to CSV string
+    const csvString = csvData
+      .map((row) =>
+        row.map((value) => `"${escapeJSONString(value.toString())}"`).join(",")
+      )
+      .join("\n");
+
+    // Create a Blob from the CSV string
+    const blob = new Blob([csvString], { type: "text/csv" });
+
+    // Create a link element
+    const link = document.createElement("a");
+
+    // Set the download attribute with a filename
+    link.download = `${filename}.csv`;
+
+    // Create an object URL for the Blob and set it as the href attribute
+    link.href = window.URL.createObjectURL(blob);
+
+    // Append the link to the body
+    document.body.appendChild(link);
+
+    // Programmatically click the link to trigger the download
+    link.click();
+
+    // Clean up by removing the link
+    link.parentNode!.removeChild(link);
+  };
+
   const handleDownloadResponses = (fileType: "CSV" | "JSON" | "PDF") => {
     // if (data?.length === 0) {
     //   toast({
@@ -58,6 +98,7 @@ const DownloadResponseButton: React.FC<IProp> = (props): React.ReactElement => {
       generateAndDownloadJSONFile(data);
     }
     if (fileType === "CSV") {
+      generateAndDownloadCSVFile(data);
     }
     if (fileType === "PDF") {
     }

@@ -56,6 +56,7 @@ export default async function FormResponse({
         createdAt: moment(response?.createdAt).toDate().toString(),
         data: response?.data,
       };
+      res.push(obj);
     });
     return res;
   };
