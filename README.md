@@ -17,7 +17,7 @@ A single place to create, edit & manage your forms with easy integration into yo
 
 ## Tech Stack
 
-NextJS, MongoDB
+NextJS, Shadcn UI, Tailwind, MongoDB
 
 ## Run Locally
 
