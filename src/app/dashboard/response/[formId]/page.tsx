@@ -91,6 +91,7 @@ export default async function FormResponse({
         <EmptyState text="No responses Found" />
       ) : (
         <DataTable
+          disableFiltering
           columns={RESPONSE_TABLE_DEFINITION}
           data={
             data?.responses?.sort(
