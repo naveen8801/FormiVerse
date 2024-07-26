@@ -2,6 +2,7 @@
 import User from "@/models/User";
 import connectDB from "@/helpers/ConnectDB";
 import { hasPassword } from "@/helpers/passwordManager";
+import sendEmail from "@/lib/sendEmail";
 
 export const handleUserSignUp = async (data: {
   email: string;
@@ -24,6 +25,13 @@ export const handleUserSignUp = async (data: {
         validateBeforeSave: true,
       });
 
+      // Send email on user create
+      const { msg, error } = await sendEmail({
+        receiverEmail: email,
+        data: { name: fullname },
+        emailType: "WELCOME",
+      });
+      console.log({ msg, error });
       return { msg: "User created successfully" };
     } else {
       return { error: "User already exist with this email" };

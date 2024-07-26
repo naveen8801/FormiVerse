@@ -20,25 +20,28 @@ const WelcomeEmailTemplate: React.FC<Readonly<IProps>> = (
   props
 ): React.ReactElement => {
   const { name } = props;
-  const baseUrl = process.env.APP_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
   return (
     <Html>
       <Head />
-      <Preview>Never Miss a Todo Comment Again!</Preview>
+      <Preview>
+        A single place to create, edit & manage your forms with easy integration
+      </Preview>
       <Body style={main}>
         <Container style={container}>
           <div style={logo}>
             <div style={mainTitle}>
-              <span>Dev</span>
-              <span style={span}>Todo</span>
+              <span>Formi</span>
+              <span style={span}>Verse</span>
             </div>
           </div>
           <Hr style={hr} />
           <Text style={paragraph}>Hi {name},</Text>
           <Text style={paragraph}>
-            Welcome to DevTodo, the platform with help of which you can easily
-            keep track of all the pending TODOs in your project, ensuring that
-            nothing slips through the cracks.
+            Welcome to FormiVerse! FormiVerse is your single destination for
+            creating, editing, and managing forms with ease. Whether you're
+            integrating forms into your website or viewing responses in
+            real-time, we've got you covered.
           </Text>
           <Section style={btnContainer}>
             <Button style={button} href={baseUrl}>
