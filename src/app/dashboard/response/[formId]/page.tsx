@@ -63,7 +63,7 @@ export default async function FormResponse({
 
   return (
     <div className="w-full h-full">
-      <div className="w-full flex flex-row items-center justify-end gap-8">
+      <div className="w-full flex flex-row items-center justify-end gap-4">
         <DownloadResponseButton
           filename={`Form Response-${formId}`}
           data={getCleanedResponseData(
