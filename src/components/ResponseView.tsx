@@ -64,28 +64,32 @@ const ResponseView: React.FC<IProp> = (props): React.ReactElement => {
         <span className="text-sm text-slate-500 dark:text-slate-400">
           {isFetching ? "Updating..." : "View will update every 5 seconds"}
         </span>
-        <DownloadResponseButton
-          filename={`Form Response-${formId}`}
-          data={getCleanedResponseData(
-            data?.responses?.sort(
-              (a: any, b: any) =>
-                new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime()
-            ) || []
-          )}
-        />
-        <Link
-          href={`/forms/${formId}?userId=${session?.user?.id}&disabled=true`}
-          target="_blank"
-        >
-          <Button>
-            <FaEye size={16} style={{ marginRight: "6px" }} /> Preview
-          </Button>
-        </Link>
-        <span className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1 px-0 py-0">
-          <FaClock size={16} className="text-gray-800 dark:text-white" />
-          Created {moment(data?.createdAt).fromNow()}
-        </span>
+        {data?.responses?.length > 0 && (
+          <>
+            <DownloadResponseButton
+              filename={`Form Response-${formId}`}
+              data={getCleanedResponseData(
+                data?.responses?.sort(
+                  (a: any, b: any) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                ) || []
+              )}
+            />
+            <Link
+              href={`/forms/${formId}?userId=${session?.user?.id}&disabled=true`}
+              target="_blank"
+            >
+              <Button>
+                <FaEye size={16} style={{ marginRight: "6px" }} /> Preview
+              </Button>
+            </Link>
+            <span className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1 px-0 py-0">
+              <FaClock size={16} className="text-gray-800 dark:text-white" />
+              Created {moment(data?.createdAt).fromNow()}
+            </span>
+          </>
+        )}
       </div>
       {!data || data?.responses?.length === 0 ? (
         <EmptyState text="No responses Found" />
