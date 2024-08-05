@@ -4,6 +4,7 @@ import { Card, CardContent } from "./ui/card";
 import JsonSchemaForm from "./JsonSchemaForm";
 import { handleSubmitFormResponse } from "@/actions/formActions";
 import { toast } from "./ui/use-toast";
+import { useTheme } from "next-themes";
 
 interface IProp {
   formSchema: object;
@@ -21,10 +22,12 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
     uiSchema = {},
     disabled = false,
   } = props;
+  const { setTheme } = useTheme();
   const [data, setData] = useState<any>({});
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setTheme("light");
     setMounted(true);
   }, []);
 
