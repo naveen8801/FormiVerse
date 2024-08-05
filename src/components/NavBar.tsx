@@ -20,52 +20,62 @@ const NavBar: React.FC<{ hideAuthRelatedInfo?: boolean }> = (
 
   return (
     <div className="w-full h-28 box-border flex gap-8 justify-between items-center px-16">
-      <Link href={"/"}>
-        <div className="text-3xl font-extrabold">
-          <span className="text-primaryColor">Formi</span>
-          <span>Verse</span>
-        </div>
-      </Link>
+      {!hideAuthRelatedInfo && (
+        <Link href={"/"}>
+          <div className="text-3xl font-extrabold">
+            <span className="text-primaryColor">Formi</span>
+            <span>Verse</span>
+          </div>
+        </Link>
+      )}
       <NavigationMenu className="gap-2">
-        {isAuthenticated ? (
+        {!hideAuthRelatedInfo && (
           <>
-            <NavigationMenuItem className="list-none">
-              <NavigationMenuLink
-                onClick={() => {
-                  signOut();
-                }}
-                className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-              >
-                Sign Out
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            {user?.username && (
-              <NavigationMenuItem className="list-none">
-                <small className="text-sm font-bold leading-none">
-                  {`Hey ${user?.username} 👋`}
-                </small>
-              </NavigationMenuItem>
+            {" "}
+            {isAuthenticated ? (
+              <>
+                <NavigationMenuItem className="list-none">
+                  <NavigationMenuLink
+                    onClick={() => {
+                      signOut();
+                    }}
+                    className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+                  >
+                    Sign Out
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                {user?.username && (
+                  <NavigationMenuItem className="list-none">
+                    <small className="text-sm font-bold leading-none">
+                      {`Hey ${user?.username} 👋`}
+                    </small>
+                  </NavigationMenuItem>
+                )}
+              </>
+            ) : (
+              <>
+                <NavigationMenuItem className="list-none">
+                  <Link href="/signup" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Sign Up
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem className="list-none">
+                  <Link href="/login" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Sign In
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </>
             )}
           </>
-        ) : (
-          <>
-            <NavigationMenuItem className="list-none">
-              <Link href="/signup" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Sign Up
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="list-none">
-              <Link href="/login" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Sign In
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          </>
         )}
-
         <NavigationMenuItem className="list-none ml-4">
           <ThemeSwitcher />
         </NavigationMenuItem>
