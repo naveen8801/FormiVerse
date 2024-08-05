@@ -18,6 +18,7 @@ import { handleFormDeletion } from "@/actions/formActions";
 import { toast } from "@/components/ui/use-toast";
 import { generateEmbedCodeForForm } from "@/lib/utils";
 import { FaCopy } from "react-icons/fa6";
+import { FaDeleteLeft, FaCode, FaEye, FaList } from "react-icons/fa6";
 
 export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
   {
@@ -61,7 +62,10 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <Link href={`/dashboard/response/${row.original._id}`}>
-              <DropdownMenuItem>See Responses</DropdownMenuItem>
+              <DropdownMenuItem>
+                <FaList size={18} className="mr-2" />
+                See Responses
+              </DropdownMenuItem>
             </Link>
             <DropdownMenuItem
               onClick={async () => {
@@ -86,6 +90,7 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
                 }
               }}
             >
+              <FaDeleteLeft size={18} className="mr-2" />
               Delete
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -103,13 +108,17 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
                 });
               }}
             >
+              <FaCode size={18} className="mr-2" />
               Copy Embed Code
             </DropdownMenuItem>
             <Link
               href={`/forms/${row.original?._id}?userId=${row.original?.userId}&disabled=true`}
               target="_blank"
             >
-              <DropdownMenuItem>Preview Form</DropdownMenuItem>
+              <DropdownMenuItem>
+                <FaEye size={18} className="mr-2" />
+                Preview Form
+              </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
         </DropdownMenu>
