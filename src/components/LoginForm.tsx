@@ -62,6 +62,10 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
       title: "Success",
       description: "Login successful",
     });
+    setFormData({
+      username: "",
+      password: "",
+    });
     setIsLoading(false);
     router.push("/dashboard");
   };

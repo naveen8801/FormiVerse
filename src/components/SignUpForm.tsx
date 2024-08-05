@@ -61,6 +61,12 @@ const SignUpForm: React.FC = (): React.ReactElement => {
         title: "Success",
         description: msg,
       });
+      setFormData({
+        username: "",
+        email: "",
+        fullname: "",
+        password: "",
+      });
     }
     setIsLoading(false);
   };
