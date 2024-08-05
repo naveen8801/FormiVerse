@@ -61,7 +61,9 @@ const ResponseView: React.FC<IProp> = (props): React.ReactElement => {
   return (
     <div>
       <div className="w-full flex flex-row items-center justify-end gap-4">
-        {isFetching ? "Updating..." : ""}
+        <span className="text-sm text-slate-500 dark:text-slate-400">
+          {isFetching ? "Updating..." : "View will update every 5 seconds"}
+        </span>
         <DownloadResponseButton
           filename={`Form Response-${formId}`}
           data={getCleanedResponseData(
