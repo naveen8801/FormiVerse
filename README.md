@@ -8,6 +8,8 @@ A single place to create, edit & manage your forms with easy integration into yo
 
 <img src="https://github.com/naveen8801/FormiVerse/blob/main/src/assets/dev-todo.gif" alt="gif" width="90%"> -->
 
+[![Watch the video](https://img.youtube.com/vi/HV0ZbqAQkqI/maxresdefault.jpg)](https://youtu.be/HV0ZbqAQkqI)
+
 ## Features
 
 - Utilize power of React Json Schema Form and create forms easily with help of Form Schema and UI Schema :)
