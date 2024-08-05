@@ -66,7 +66,7 @@ export const config = {
               return user;
             }
           } else {
-            throw new Error("No use found with this email !");
+            throw new Error("No use found with this email or username !");
           }
         } catch (error) {
           throw new Error(error?.toString());
