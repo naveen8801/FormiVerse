@@ -4,9 +4,9 @@ A single place to create, edit & manage your forms with easy integration into yo
 
 - [Dashboard](https://formi-verse.vercel.app//)
 
-<!-- # Quick Demo
+# Quick Demo
 
-<img src="https://github.com/naveen8801/FormiVerse/blob/main/src/assets/dev-todo.gif" alt="gif" width="90%"> -->
+<img src="https://github.com/naveen8801/FormiVerse/blob/main/src/assets/images/formi-verse.gif" alt="gif" width="90%">
 
 ## Features
 
