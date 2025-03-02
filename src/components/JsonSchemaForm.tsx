@@ -20,9 +20,7 @@ const JsonSchemaForm: React.FC<IProp> = (props: any): React.ReactElement => {
       {...props}
       validator={validator}
       omitExtraData
-      liveOmit
-      liveValidate
-      showErrorList
+      showErrorList={false}
     />
   );
 };

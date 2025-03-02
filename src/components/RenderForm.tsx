@@ -58,19 +58,7 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
     <div className="w-full sm:w-full md:w-full xl:w-1/2">
       {mounted && (
         <>
-          <div className="text-right my-2">
-            <p className="text-sm text-gray-600">
-              Powered by{" "}
-              <a
-                href={process.env.NEXT_PUBLIC_APP_URL!}
-                target="_blank"
-                className="font-semibold text-blue-500 hover:text-blue-700"
-              >
-                FormiVerse
-              </a>
-            </p>
-          </div>
-          <Card className="row-span-1 h-full">
+          {/* <Card className="row-span-1 h-full">
             <CardContent>
               <JsonSchemaForm
                 disabled={disabled}
@@ -85,7 +73,30 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
                 }}
               ></JsonSchemaForm>
             </CardContent>
-          </Card>
+          </Card> */}
+          <JsonSchemaForm
+            disabled={disabled}
+            // liveOmit={true}
+            schema={formSchema}
+            uiSchema={uiSchema}
+            formData={data}
+            onChange={(evt: any) => setData(evt?.formData)}
+            onSubmit={(evt: any) => {
+              handleFormSubmission(evt?.formData);
+            }}
+          ></JsonSchemaForm>
+          <div className=" my-2">
+            <p className="text-sm text-gray-600">
+              Powered by{" "}
+              <a
+                href={process.env.NEXT_PUBLIC_APP_URL!}
+                target="_blank"
+                className="font-semibold text-blue-500 hover:text-blue-700"
+              >
+                FormiVerse
+              </a>
+            </p>
+          </div>
         </>
       )}
     </div>
