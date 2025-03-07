@@ -18,6 +18,7 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
   const { setTheme } = useTheme();
   const [data, setData] = useState<any>({});
   const [mounted, setMounted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setTheme("light");
@@ -25,6 +26,7 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
   }, []);
 
   const handleFormSubmission = async (payload: any) => {
+    setIsSubmitting(true);
     const { data, error } = await handleSubmitFormResponse(formId, payload);
     if (error) {
       toast({
@@ -41,6 +43,7 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
         description: "Response saved successfully",
       });
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -48,7 +51,7 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
       {mounted && (
         <>
           <JsonSchemaForm
-            disabled={disabled}
+            disabled={disabled || isSubmitting}
             schema={formSchema}
             uiSchema={uiSchema}
             formData={data}
