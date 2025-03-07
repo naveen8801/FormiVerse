@@ -36,3 +36,5 @@ export const Form = new mongoose.Schema({
   },
   responses: [FormResponse],
 });
+
+export default mongoose?.models?.Form || mongoose.model("Form", Form);

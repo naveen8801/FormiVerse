@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const generateEmbedCodeForForm = (userId: string, formId: string) => {
+export const generateEmbedCodeForForm = (formId: string) => {
   return `<iframe width="500px" height="700px" src="${process.env
-    .NEXT_PUBLIC_APP_URL!}/forms/${formId}?userId=${userId}" title="FormiVerse"></iframe>`;
+    .NEXT_PUBLIC_APP_URL!}/forms/${formId}" title="FormiVerse"></iframe>`;
 };

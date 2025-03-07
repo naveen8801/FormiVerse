@@ -35,10 +35,7 @@ const ResponseView: React.FC<IProp> = (props): React.ReactElement => {
 
   const fetchResponseInRealtime = async () => {
     setIsFetching(true);
-    const { data, error } = await getFormResponsesById(
-      session?.user?.id,
-      formId
-    );
+    const { data, error } = await getFormResponsesById(formId);
 
     if (data) {
       setData(data);

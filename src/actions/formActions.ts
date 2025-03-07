@@ -4,6 +4,7 @@ import connectDB from "@/helpers/ConnectDB";
 import { IForm } from "@/types";
 import { revalidatePath } from "next/cache";
 import sendEmail from "@/lib/sendEmail";
+import Form from "@/models/Form";
 
 /**
  * Retrieves the forms associated with a given user.
@@ -16,11 +17,11 @@ export const handleGetUserForms = async (
 ): Promise<{ data?: IForm[]; error?: string | undefined }> => {
   try {
     await connectDB();
-    const user = await User.findById(userId);
-    if (!user) {
-      return { error: "User not found" };
+    const forms = await Form.find({ "author._id": userId });
+    if (!forms) {
+      return { error: "forms not found" };
     }
-    return { data: user.forms || [] };
+    return { data: forms || [] };
   } catch (error) {
     return { error: error?.toString() };
   }
@@ -30,44 +31,28 @@ export const handleGetUserForms = async (
  * Creates a new form for a user.
  *
  * @param {IForm} payload - The form data to be created.
- * @param {string} userId - The ID of the user.
  * @return {Promise<{ data: any; } | { error: string; }>} - A promise that resolves to an object with a success message if the form is created successfully, or an object with an error message if the user is not found.
  */
 export const handleCreateForm = async (
-  payload: IForm,
-  userId: string
+  payload: IForm
 ): Promise<{ data?: any; error?: string }> => {
   try {
     await connectDB();
-    const user = await User.findById(userId);
-    if (!user) {
-      return { error: "User not found" };
-    }
-    const formsPayload = [...user.forms, { ...payload, createdAt: Date.now() }];
-    const data: any = await User.findOneAndUpdate(
-      { _id: userId },
-      { forms: formsPayload },
-      { new: true }
-    );
-    const updatedForms = JSON.parse(JSON.stringify(data?.forms || []));
-    const createdForm = updatedForms?.[updatedForms?.length - 1];
+    const formsPayload = { ...payload, createdAt: Date.now() };
+    const form = await new Form(formsPayload).save({
+      validateBeforeSave: true,
+    });
     revalidatePath("/dashboard");
-    return { data: createdForm };
+    return { data: form };
   } catch (error) {
     return { error: error?.toString() };
   }
 };
 
-export const getFormById = async (userId: string, formId: string) => {
+export const getFormById = async (formId: string) => {
   try {
     await connectDB();
-    const user = await User.findById(userId);
-    if (!user) {
-      return { error: "User not found" };
-    }
-    const form = user?.forms?.find(
-      (form: IForm) => form._id?.toString() === formId
-    );
+    const form = await Form.findById(formId);
     if (!form) {
       return { error: "Form not found" };
     }
@@ -77,16 +62,10 @@ export const getFormById = async (userId: string, formId: string) => {
   }
 };
 
-export const getFormResponsesById = async (userId: string, formId: string) => {
+export const getFormResponsesById = async (formId: string) => {
   try {
     await connectDB();
-    const user = await User.findById(userId);
-    if (!user) {
-      return { error: "User not found" };
-    }
-    const form = user?.forms?.find(
-      (form: IForm) => form._id?.toString() === formId
-    );
+    const form = await Form.findById(formId);
     if (!form) {
       return { error: "Form not found" };
     }
@@ -97,28 +76,13 @@ export const getFormResponsesById = async (userId: string, formId: string) => {
   }
 };
 
-export const handleFormDeletion = async (userId: string, formId: string) => {
+export const handleFormDeletion = async (formId: string) => {
   try {
     await connectDB();
-    const user = await User.findById(userId);
-    if (!user) {
-      return { error: "User not found" };
-    }
-    const form = user?.forms?.find(
-      (form: IForm) => form._id?.toString() === formId
-    );
+    const form = await Form.findByIdAndDelete(formId);
     if (!form) {
       return { error: "Form not found" };
     }
-    const data: any = await User.findOneAndUpdate(
-      { _id: userId },
-      {
-        forms: user?.forms.filter(
-          (form: IForm) => form._id?.toString() !== formId
-        ),
-      },
-      { new: true }
-    );
     revalidatePath("/dashboard");
     return { data: {} };
   } catch (error) {
@@ -127,49 +91,35 @@ export const handleFormDeletion = async (userId: string, formId: string) => {
 };
 
 export const handleSubmitFormResponse = async (
-  userId: string,
   formId: string,
   payload: any
 ) => {
   try {
     await connectDB();
-    const user = await User.findById(userId);
-    if (!user) {
-      return { error: "User not found" };
-    }
-    const idx = user?.forms?.findIndex(
-      (form: IForm) => form._id?.toString() === formId
-    );
-    if (idx == -1) {
+    const form = await Form.findById(formId);
+    if (!form) {
       return { error: "Form not found" };
     }
 
     const responsePayload = { data: payload, createdAt: Date.now() };
-
-    let newFormsArr = user?.forms;
-    newFormsArr[idx].responses = [
-      ...newFormsArr[idx].responses,
-      responsePayload,
-    ];
-    await User.findOneAndUpdate(
-      { _id: userId },
+    await Form.findOneAndUpdate(
+      { _id: formId },
       {
-        forms: newFormsArr,
+        responses: [...form.responses, responsePayload],
       },
       { new: true }
     )
-      .then(async () => {
+      .then(async (data) => {
         // Send email for response notification
         const { msg, error } = await sendEmail({
-          receiverEmail: user?.email,
+          receiverEmail: form?.author?.email,
           data: {
-            name: user?.fullname,
-            form: newFormsArr?.[idx],
+            name: form?.author?.username,
+            form: data,
             response: responsePayload,
           },
           emailType: "NEW_RESPONSE",
         });
-        console.log({ msg, error });
       })
       .catch((err) => {
         console.log(err);

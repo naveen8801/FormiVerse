@@ -71,7 +71,6 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
               onClick={async () => {
                 console.log(row);
                 const { data, error } = await handleFormDeletion(
-                  row.original.userId!,
                   row.original._id!
                 );
                 if (error) {
@@ -96,10 +95,7 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             <DropdownMenuItem
               onClick={() => {
                 navigator.clipboard.writeText(
-                  generateEmbedCodeForForm(
-                    row.original?.userId!,
-                    row.original?._id!
-                  )
+                  generateEmbedCodeForForm(row.original?._id!)
                 );
                 toast({
                   variant: "default",
@@ -112,7 +108,7 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
               Copy Embed Code
             </DropdownMenuItem>
             <Link
-              href={`/forms/${row.original?._id}?userId=${row.original?.userId}&disabled=true`}
+              href={`/forms/${row.original?._id}&disabled=true`}
               target="_blank"
             >
               <DropdownMenuItem>

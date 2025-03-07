@@ -37,10 +37,16 @@
         
         .popup-close {
           position: absolute;
-          top: 10px;
-          right: 10px;
+          top: 17px;
+          right: 15px;
           cursor: pointer;
-          font-size: 20px;
+          font-size: 23px;
+        }
+
+        .popup-header {
+          margin: 0;
+          padding: 0;
+          font-size: 1.5em;
         }
         
         .popup-trigger {
@@ -64,7 +70,7 @@
     return targetElement;
   }
 
-  function createPopupForElement(elementId, popupHeight) {
+  function createPopupForElement(elementId, formId, popupHeight, popupHeader) {
     // Create overlay
     const overlay = document.createElement("div");
     overlay.classList.add("popup-overlay");
@@ -75,9 +81,17 @@
     popup.classList.add("popup-container");
 
     // Create close button
-    const closeButton = document.createElement("span");
-    closeButton.classList.add("popup-close");
-    closeButton.innerHTML = "&times;";
+    // const closeButton = document.createElement("span");
+    // closeButton.classList.add("popup-close");
+    // closeButton.innerHTML = "&times;";
+
+    // Create header
+    let header = null;
+    if (popupHeader) {
+      header = document.createElement("h2");
+      header.classList.add("popup-header");
+      header.innerHTML = popupHeader;
+    }
 
     // Create content
     const content = document.createElement("div");
@@ -85,13 +99,14 @@
       <iframe
       width="100%" 
       height="${popupHeight}"
-      src="http://localhost:3000/forms/67c44eb9dacc61e6c024d9dc?userId=662ce1abd829c891ae0fc3b4"
+      src="${BASE_URL}/forms/${formId}"
       title="FormiVerse"
       ></iframe>
 `;
 
     // Assemble popup
-    popup.appendChild(closeButton);
+    if (header) popup.appendChild(header);
+    // popup.appendChild(closeButton);
     popup.appendChild(content);
     overlay.appendChild(popup);
 
@@ -99,9 +114,9 @@
     document.body.appendChild(overlay);
 
     // Add close events
-    closeButton.addEventListener("click", function () {
-      overlay.classList.remove("show-popup");
-    });
+    // closeButton.addEventListener("click", function () {
+    //   overlay.classList.remove("show-popup");
+    // });
 
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) {
@@ -139,11 +154,19 @@
     // Get the trigger-element-id attribute from the script tag
     const targetId = currentScript.getAttribute("data-trigger-element-id");
 
+    // Get the formId attribute from the script tag
+    const formId = currentScript.getAttribute("data-form-id");
+
     // Header for popup
     const popupHeader = currentScript.getAttribute("data-popup-header") || "";
 
     // Height of popup
     const popupHeight = currentScript.getAttribute("data-popup-height") || 550;
+
+    if (!formId) {
+      console.error("No form-id attribute found on script tag");
+      return;
+    }
 
     if (!targetId) {
       console.error("No trigger-element-id attribute found on script tag");
@@ -158,7 +181,12 @@
     addPopupStyles();
 
     // Create popup for the target element
-    const overlay = createPopupForElement(targetId, popupHeight);
+    const overlay = createPopupForElement(
+      targetId,
+      formId,
+      popupHeight,
+      popupHeader
+    );
 
     // Make the element itself trigger the popup
     setupElementTrigger(element, targetId, overlay);

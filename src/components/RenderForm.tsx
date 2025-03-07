@@ -10,18 +10,11 @@ interface IProp {
   formSchema: object;
   uiSchema: object;
   disabled?: boolean;
-  userId: string;
   formId: string;
 }
 
 const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
-  const {
-    userId,
-    formId,
-    formSchema = {},
-    uiSchema = {},
-    disabled = false,
-  } = props;
+  const { formId, formSchema = {}, uiSchema = {}, disabled = false } = props;
   const { setTheme } = useTheme();
   const [data, setData] = useState<any>({});
   const [mounted, setMounted] = useState(false);
@@ -32,11 +25,7 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
   }, []);
 
   const handleFormSubmission = async (payload: any) => {
-    const { data, error } = await handleSubmitFormResponse(
-      userId,
-      formId,
-      payload
-    );
+    const { data, error } = await handleSubmitFormResponse(formId, payload);
     if (error) {
       toast({
         variant: "destructive",
