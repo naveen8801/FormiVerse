@@ -47,25 +47,8 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
     <div className="w-full sm:w-full md:w-full xl:w-1/2">
       {mounted && (
         <>
-          {/* <Card className="row-span-1 h-full">
-            <CardContent>
-              <JsonSchemaForm
-                disabled={disabled}
-                liveOmit={true}
-                liveValidate={true}
-                schema={formSchema}
-                uiSchema={uiSchema}
-                formData={data}
-                onChange={(evt: any) => setData(evt?.formData)}
-                onSubmit={(evt: any) => {
-                  handleFormSubmission(evt?.formData);
-                }}
-              ></JsonSchemaForm>
-            </CardContent>
-          </Card> */}
           <JsonSchemaForm
             disabled={disabled}
-            // liveOmit={true}
             schema={formSchema}
             uiSchema={uiSchema}
             formData={data}

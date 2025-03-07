@@ -30,11 +30,11 @@ export default async function Form({
   }
 
   const { data, error } = await getFormById(formId);
-
   if (error) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center gap-3 ">
         <p className="text-sm text-muted-foreground">{"Form Not Found"}</p>
+        {formId}
         <Image
           alt="not_found_image"
           width={200}

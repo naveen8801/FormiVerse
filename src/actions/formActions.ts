@@ -51,6 +51,7 @@ export const handleCreateForm = async (
 
 export const getFormById = async (formId: string) => {
   try {
+    console.log({ formId });
     await connectDB();
     const form = await Form.findById(formId);
     if (!form) {

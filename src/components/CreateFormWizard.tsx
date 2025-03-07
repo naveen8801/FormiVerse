@@ -28,7 +28,10 @@ import {
 } from "@radix-ui/react-popover";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import { formSchema } from "@/validation/form";
-import { generateEmbedCodeForForm } from "@/lib/utils";
+import {
+  generateEmbedCodeForForm,
+  generateScriptCodeForForm,
+} from "@/lib/utils";
 
 interface IProp {
   user: any;
@@ -299,6 +302,10 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
             <code className="w-full font-mono text-sm font-semibold">
               {generateEmbedCodeForForm(data?._id!)}
             </code>
+
+            {/* <code className="w-full font-mono text-sm font-semibold">
+              {generateScriptCodeForForm(data?._id!)}
+            </code> */}
           </div>
         </div>
       );

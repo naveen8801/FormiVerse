@@ -108,7 +108,7 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
               Copy Embed Code
             </DropdownMenuItem>
             <Link
-              href={`/forms/${row.original?._id}&disabled=true`}
+              href={`/forms/${row.original?._id}?disabled=true`}
               target="_blank"
             >
               <DropdownMenuItem>

@@ -74,7 +74,7 @@ const ResponseView: React.FC<IProp> = (props): React.ReactElement => {
               )}
             />
             <Link
-              href={`/forms/${formId}?userId=${session?.user?.id}&disabled=true`}
+              href={`/forms/${formId}?userId=${session?.user?.id}?disabled=true`}
               target="_blank"
             >
               <Button>
