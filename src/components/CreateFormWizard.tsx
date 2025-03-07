@@ -390,7 +390,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
           Create Form
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-full sm:min-w-full md:min-w-full xl:min-w-[1200px] overflow-y-scroll max-h-[90vh]">
+      <DialogContent className="min-w-full sm:min-w-full md:min-w-full xl:min-w-[95%] overflow-y-scroll max-h-[90vh]">
         {content}
         {footer}
       </DialogContent>
