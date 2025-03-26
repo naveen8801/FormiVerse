@@ -72,7 +72,6 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             </Link>
             <DropdownMenuItem
               onClick={async () => {
-                console.log(row);
                 const { data, error } = await handleFormDeletion(
                   row.original._id!
                 );

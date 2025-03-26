@@ -31,7 +31,6 @@ export const handleUserSignUp = async (data: {
         data: { name: fullname },
         emailType: "WELCOME",
       });
-      console.log({ msg, error });
       return { msg: "User created successfully" };
     } else {
       return { error: "User already exist with this email" };
