@@ -99,7 +99,7 @@
       <iframe
       width="100%" 
       height="${popupHeight}"
-      src="http://localhost:3000//forms/${formId}"
+      src="${BASE_URL}/forms/${formId}"
       title="FormiVerse"
       ></iframe>
 `;

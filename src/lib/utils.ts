@@ -11,12 +11,12 @@ export const generateIFrameEmbedCodeForForm = (formId: string) => {
 };
 
 export const generateScriptEmbedCodeForForm = (formId: string) => {
-  return `<Script
-        strategy="lazyOnload"
+  return `<script
+        async
         src="${process.env.NEXT_PUBLIC_APP_URL!}/magical-script.js"
         data-form-id="${formId}"
-        data-trigger-element-id="formiverse-form" // Pass id of HTML element which will act as a trigger to popup
-        data-popup-header="Contact Me" // Pass header to popup - Optional
-        data-popup-height="550" // Pass height to popup - Optional
+        data-trigger-element-id="formiverse-form" 
+        data-popup-header="Contact Me"
+        data-popup-height="550"
       />`;
 };
