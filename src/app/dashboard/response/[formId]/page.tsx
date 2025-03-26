@@ -34,7 +34,7 @@ export default async function FormResponse({
     redirect("/login");
   }
 
-  const { data, error } = await getFormResponsesById(session?.user?.id, formId);
+  const { data, error } = await getFormResponsesById(formId);
 
   if (error) {
     return (

@@ -10,21 +10,15 @@ interface IProp {
   formSchema: object;
   uiSchema: object;
   disabled?: boolean;
-  userId: string;
   formId: string;
 }
 
 const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
-  const {
-    userId,
-    formId,
-    formSchema = {},
-    uiSchema = {},
-    disabled = false,
-  } = props;
+  const { formId, formSchema = {}, uiSchema = {}, disabled = false } = props;
   const { setTheme } = useTheme();
   const [data, setData] = useState<any>({});
   const [mounted, setMounted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setTheme("light");
@@ -32,11 +26,8 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
   }, []);
 
   const handleFormSubmission = async (payload: any) => {
-    const { data, error } = await handleSubmitFormResponse(
-      userId,
-      formId,
-      payload
-    );
+    setIsSubmitting(true);
+    const { data, error } = await handleSubmitFormResponse(formId, payload);
     if (error) {
       toast({
         variant: "destructive",
@@ -52,13 +43,24 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
         description: "Response saved successfully",
       });
     }
+    setIsSubmitting(false);
   };
 
   return (
     <div className="w-full sm:w-full md:w-full xl:w-1/2">
       {mounted && (
         <>
-          <div className="text-right my-2">
+          <JsonSchemaForm
+            disabled={disabled || isSubmitting}
+            schema={formSchema}
+            uiSchema={uiSchema}
+            formData={data}
+            onChange={(evt: any) => setData(evt?.formData)}
+            onSubmit={(evt: any) => {
+              handleFormSubmission(evt?.formData);
+            }}
+          ></JsonSchemaForm>
+          <div className=" my-2">
             <p className="text-sm text-gray-600">
               Powered by{" "}
               <a
@@ -70,22 +72,6 @@ const RenderForm: React.FC<IProp> = (props): React.ReactElement => {
               </a>
             </p>
           </div>
-          <Card className="row-span-1 h-full">
-            <CardContent>
-              <JsonSchemaForm
-                disabled={disabled}
-                liveOmit={true}
-                liveValidate={true}
-                schema={formSchema}
-                uiSchema={uiSchema}
-                formData={data}
-                onChange={(evt: any) => setData(evt?.formData)}
-                onSubmit={(evt: any) => {
-                  handleFormSubmission(evt?.formData);
-                }}
-              ></JsonSchemaForm>
-            </CardContent>
-          </Card>
         </>
       )}
     </div>

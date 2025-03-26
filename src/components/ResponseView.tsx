@@ -35,10 +35,7 @@ const ResponseView: React.FC<IProp> = (props): React.ReactElement => {
 
   const fetchResponseInRealtime = async () => {
     setIsFetching(true);
-    const { data, error } = await getFormResponsesById(
-      session?.user?.id,
-      formId
-    );
+    const { data, error } = await getFormResponsesById(formId);
 
     if (data) {
       setData(data);
@@ -77,7 +74,7 @@ const ResponseView: React.FC<IProp> = (props): React.ReactElement => {
               )}
             />
             <Link
-              href={`/forms/${formId}?userId=${session?.user?.id}&disabled=true`}
+              href={`/forms/${formId}?userId=${session?.user?.id}?disabled=true`}
               target="_blank"
             >
               <Button>

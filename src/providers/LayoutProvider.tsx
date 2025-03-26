@@ -14,9 +14,7 @@ const LayoutProvider: React.FC<IProp> = ({ children }): React.ReactElement => {
   if (header_url?.includes("/forms")) {
     return (
       <div className="h-screen flex flex-col box-border">
-        <div className="h-full overflow-auto box-border px-16 py-4">
-          {children}
-        </div>
+        <div className="h-full overflow-auto box-border">{children}</div>
       </div>
     );
   }

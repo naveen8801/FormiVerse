@@ -16,7 +16,10 @@ import moment from "moment";
 import Link from "next/link";
 import { handleFormDeletion } from "@/actions/formActions";
 import { toast } from "@/components/ui/use-toast";
-import { generateEmbedCodeForForm } from "@/lib/utils";
+import {
+  generateIFrameEmbedCodeForForm,
+  generateScriptEmbedCodeForForm,
+} from "@/lib/utils";
 import { FaCopy } from "react-icons/fa6";
 import { FaDeleteLeft, FaCode, FaEye, FaList } from "react-icons/fa6";
 
@@ -71,7 +74,6 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
               onClick={async () => {
                 console.log(row);
                 const { data, error } = await handleFormDeletion(
-                  row.original.userId!,
                   row.original._id!
                 );
                 if (error) {
@@ -96,10 +98,7 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             <DropdownMenuItem
               onClick={() => {
                 navigator.clipboard.writeText(
-                  generateEmbedCodeForForm(
-                    row.original?.userId!,
-                    row.original?._id!
-                  )
+                  generateScriptEmbedCodeForForm(row.original?._id!)
                 );
                 toast({
                   variant: "default",
@@ -109,10 +108,25 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
               }}
             >
               <FaCode size={18} className="mr-2" />
-              Copy Embed Code
+              Copy Script Tag Embed Code
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  generateIFrameEmbedCodeForForm(row.original?._id!)
+                );
+                toast({
+                  variant: "default",
+                  title: "Success",
+                  description: "Copied Embed Code",
+                });
+              }}
+            >
+              <FaCode size={18} className="mr-2" />
+              Copy Iframe Embed Code
             </DropdownMenuItem>
             <Link
-              href={`/forms/${row.original?._id}?userId=${row.original?.userId}&disabled=true`}
+              href={`/forms/${row.original?._id}?disabled=true`}
               target="_blank"
             >
               <DropdownMenuItem>

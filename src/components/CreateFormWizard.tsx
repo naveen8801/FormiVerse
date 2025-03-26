@@ -28,7 +28,10 @@ import {
 } from "@radix-ui/react-popover";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import { formSchema } from "@/validation/form";
-import { generateEmbedCodeForForm } from "@/lib/utils";
+import {
+  generateIFrameEmbedCodeForForm,
+  generateScriptEmbedCodeForForm,
+} from "@/lib/utils";
 
 interface IProp {
   user: any;
@@ -96,7 +99,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     if (payload?.uiSchema) {
       payload.uiSchema = Base64.encode(payload.uiSchema);
     }
-
+    console.log({ payload });
     const { success, errors } = await validateDataForZodSchema(
       payload,
       formSchema
@@ -113,7 +116,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       return;
     }
 
-    const { data, error } = await handleCreateForm(payload, user?.id);
+    const { data, error } = await handleCreateForm(payload);
     if (error) {
       toast({
         variant: "destructive",
@@ -182,13 +185,8 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     },
   ];
 
-  const handleCopyCommand = () => {
-    navigator.clipboard.writeText(
-      `<iframe  width="500px" height="700px" src="${process.env
-        .NEXT_PUBLIC_APP_URL!}/forms/${data?._id}?userId=${
-        user?.id
-      }" title="FormiVerse"></iframe>`
-    );
+  const handleCopyCommand = (code: string) => {
+    navigator.clipboard.writeText(code);
   };
 
   // Content as per current step
@@ -285,7 +283,13 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
           <div className="flex items-center justify-end cursor-pointer">
             <Popover>
               <PopoverTrigger>
-                <Button variant="outline" onClick={handleCopyCommand}>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    const code = generateIFrameEmbedCodeForForm(data?._id!);
+                    handleCopyCommand(code);
+                  }}
+                >
                   <LuCopy size={18} />
                 </Button>
               </PopoverTrigger>
@@ -297,9 +301,37 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
               </PopoverContent>
             </Popover>
           </div>
+          <p className="text-sm text-slate-300">Embed Form using IFrame</p>
           <div className="space-y-2 w-full bg-muted px-[0.3rem] py-[1rem] rounded">
             <code className="w-full font-mono text-sm font-semibold">
-              {generateEmbedCodeForForm(user?.id, data?._id!)}
+              {generateIFrameEmbedCodeForForm(data?._id!)}
+            </code>
+          </div>
+          <div className="flex items-center justify-end cursor-pointer">
+            <Popover>
+              <PopoverTrigger>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    const code = generateScriptEmbedCodeForForm(data?._id!);
+                    handleCopyCommand(code);
+                  }}
+                >
+                  <LuCopy size={18} />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                align="start"
+                className="bg-muted px-[1rem] py-[0.5rem] text-sm rounded"
+              >
+                Copied!
+              </PopoverContent>
+            </Popover>
+          </div>
+          <p className="text-sm text-slate-300">Embed Form using Script tag</p>
+          <div className="space-y-2 w-full bg-muted px-[0.3rem] py-[1rem] rounded">
+            <code className="w-full font-mono text-sm font-semibold">
+              {generateScriptEmbedCodeForForm(data?._id!)}
             </code>
           </div>
         </div>
@@ -390,7 +422,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
           Create Form
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-full sm:min-w-full md:min-w-full xl:min-w-[1200px] overflow-y-scroll max-h-[90vh]">
+      <DialogContent className="min-w-full sm:min-w-full md:min-w-full xl:min-w-[95%] overflow-y-scroll max-h-[90vh]">
         {content}
         {footer}
       </DialogContent>
