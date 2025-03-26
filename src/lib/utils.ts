@@ -18,5 +18,5 @@ export const generateScriptEmbedCodeForForm = (formId: string) => {
         data-trigger-element-id="formiverse-form" 
         data-popup-header="Contact Me"
         data-popup-height="550"
-      />`;
+      ></script>`;
 };
