@@ -17,7 +17,6 @@ import Link from "next/link";
 import { handleFormDeletion } from "@/actions/formActions";
 import { toast } from "@/components/ui/use-toast";
 import {
-  generateIFrameEmbedCodeForForm,
   generateScriptEmbedCodeForForm,
 } from "@/lib/utils";
 import { FaCopy } from "react-icons/fa6";
@@ -108,21 +107,6 @@ export const FORMS_TABLE_DEFINITION: ColumnDef<IForm>[] = [
             >
               <FaCode size={18} className="mr-2" />
               Copy Script Tag Embed Code
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                navigator.clipboard.writeText(
-                  generateIFrameEmbedCodeForForm(row.original?._id!)
-                );
-                toast({
-                  variant: "default",
-                  title: "Success",
-                  description: "Copied Embed Code",
-                });
-              }}
-            >
-              <FaCode size={18} className="mr-2" />
-              Copy Iframe Embed Code
             </DropdownMenuItem>
             <Link
               href={`/forms/${row.original?._id}?disabled=true`}
