@@ -113,7 +113,7 @@
     const loader = document.createElement("div");
     loader.classList.add("popup-loader");
     loader.innerHTML = `
-    <div class="spinner"></div>
+    <div class="spinner">Loading Form...</div>
   `;
 
     // Create iframe (Initially hidden)
