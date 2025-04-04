@@ -1,7 +1,7 @@
 (function () {
   let BASE_URL = "https://formi-verse.vercel.app";
 
-  function addPopupStyles() {
+  function addPopupStyles(popupHeight) {
     // Check if styles already exist
     if (!document.getElementById("popup-styles")) {
       const styleElement = document.createElement("style");
@@ -52,6 +52,27 @@
         .popup-trigger {
           cursor: pointer;
         }
+
+        .popup-loader {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: ${popupHeight}px;
+        }
+      
+        .spinner {
+          width: 40px;
+          height: 40px;
+          border: 4px solid rgba(0, 0, 0, 0.1);
+          border-top: 4px solid #3498db;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
       `;
       document.head.appendChild(styleElement);
     }
@@ -80,11 +101,6 @@
     const popup = document.createElement("div");
     popup.classList.add("popup-container");
 
-    // Create close button
-    // const closeButton = document.createElement("span");
-    // closeButton.classList.add("popup-close");
-    // closeButton.innerHTML = "&times;";
-
     // Create header
     let header = null;
     if (popupHeader) {
@@ -93,31 +109,37 @@
       header.innerHTML = popupHeader;
     }
 
-    // Create content
-    const content = document.createElement("div");
-    content.innerHTML = `
-      <iframe
-      width="100%" 
-      height="${popupHeight}"
-      src="${BASE_URL}/forms/${formId}"
-      title="FormiVerse"
-      ></iframe>
-`;
+    // Create loading spinner
+    const loader = document.createElement("div");
+    loader.classList.add("popup-loader");
+    loader.innerHTML = `
+    <div class="spinner">Loading Form...</div>
+  `;
+
+    // Create iframe (Initially hidden)
+    const iframe = document.createElement("iframe");
+    iframe.width = "100%";
+    iframe.height = popupHeight;
+    iframe.src = `${BASE_URL}/forms/${formId}`;
+    iframe.title = "FormiVerse";
+    iframe.style.display = "none"; // Hide iframe initially
+
+    // Show iframe and hide loader when it loads
+    iframe.onload = function () {
+      loader.style.display = "none";
+      iframe.style.display = "block";
+    };
 
     // Assemble popup
     if (header) popup.appendChild(header);
-    // popup.appendChild(closeButton);
-    popup.appendChild(content);
+    popup.appendChild(loader);
+    popup.appendChild(iframe);
     overlay.appendChild(popup);
 
     // Add to document
     document.body.appendChild(overlay);
 
-    // Add close events
-    // closeButton.addEventListener("click", function () {
-    //   overlay.classList.remove("show-popup");
-    // });
-
+    // Close popup on clicking outside
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) {
         overlay.classList.remove("show-popup");
@@ -178,7 +200,7 @@
     if (!element) return;
 
     // Add necessary CSS for overlays and popups
-    addPopupStyles();
+    addPopupStyles(popupHeight);
 
     // Create popup for the target element
     const overlay = createPopupForElement(

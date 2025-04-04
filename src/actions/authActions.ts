@@ -13,7 +13,7 @@ export const handleUserSignUp = async (data: {
   try {
     await connectDB();
     const { username, email, password, fullname } = data;
-    const userCheck = await User.findOne({ email: email });
+    const userCheck = await User.findOne({ email: email, isGoogleUser: false });
     if (!userCheck) {
       const hash = await hasPassword(password);
       const newUser = await new User({
@@ -21,6 +21,7 @@ export const handleUserSignUp = async (data: {
         email: email,
         password: hash,
         fullname: fullname,
+        isGoogleUser: false,
       }).save({
         validateBeforeSave: true,
       });

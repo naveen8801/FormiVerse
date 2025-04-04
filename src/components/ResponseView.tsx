@@ -92,6 +92,7 @@ const ResponseView: React.FC<IProp> = (props): React.ReactElement => {
         <EmptyState text="No responses Found" />
       ) : (
         <DataTable
+          session={session}
           disableFiltering
           columns={RESPONSE_TABLE_DEFINITION}
           data={

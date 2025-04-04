@@ -29,7 +29,6 @@ import {
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import { formSchema } from "@/validation/form";
 import {
-  generateIFrameEmbedCodeForForm,
   generateScriptEmbedCodeForForm,
 } from "@/lib/utils";
 
@@ -99,7 +98,6 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     if (payload?.uiSchema) {
       payload.uiSchema = Base64.encode(payload.uiSchema);
     }
-    console.log({ payload });
     const { success, errors } = await validateDataForZodSchema(
       payload,
       formSchema
@@ -279,34 +277,6 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       return (
         <div className="space-y-4">
           {header}
-
-          <div className="flex items-center justify-end cursor-pointer">
-            <Popover>
-              <PopoverTrigger>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    const code = generateIFrameEmbedCodeForForm(data?._id!);
-                    handleCopyCommand(code);
-                  }}
-                >
-                  <LuCopy size={18} />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                align="start"
-                className="bg-muted px-[1rem] py-[0.5rem] text-sm rounded"
-              >
-                Copied!
-              </PopoverContent>
-            </Popover>
-          </div>
-          <p className="text-sm text-slate-300">Embed Form using IFrame</p>
-          <div className="space-y-2 w-full bg-muted px-[0.3rem] py-[1rem] rounded">
-            <code className="w-full font-mono text-sm font-semibold">
-              {generateIFrameEmbedCodeForForm(data?._id!)}
-            </code>
-          </div>
           <div className="flex items-center justify-end cursor-pointer">
             <Popover>
               <PopoverTrigger>
