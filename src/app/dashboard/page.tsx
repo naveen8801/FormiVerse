@@ -1,6 +1,5 @@
 import { handleGetUserForms } from "@/actions/formActions";
 import { auth, config } from "@/auth";
-import CreateFormButton from "@/components/CreateFormButton";
 import CreateFormWizard from "@/components/CreateFormWizard";
 import { DataTable } from "@/components/DateTable";
 import EmptyState from "@/components/EmptyState";
@@ -46,9 +45,9 @@ export default async function Dashboard() {
 
   return (
     <div className="w-full h-full">
-      <div className="w-full flex flex-row items-center justify-end">
+      {/* <div className="w-full flex flex-row items-center justify-end">
         <CreateFormWizard user={session?.user} />
-      </div>
+      </div> */}
 
       {!data || data?.length === 0 ? (
         <EmptyState
@@ -56,7 +55,11 @@ export default async function Dashboard() {
           action={<CreateFormWizard user={session?.user} />}
         />
       ) : (
-        <DataTable columns={FORMS_TABLE_DEFINITION} data={returnTableData()} />
+        <DataTable
+          session={session}
+          columns={FORMS_TABLE_DEFINITION}
+          data={returnTableData()}
+        />
       )}
     </div>
   );
