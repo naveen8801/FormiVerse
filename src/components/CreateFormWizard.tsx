@@ -98,7 +98,6 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     if (payload?.uiSchema) {
       payload.uiSchema = Base64.encode(payload.uiSchema);
     }
-    console.log({ payload });
     const { success, errors } = await validateDataForZodSchema(
       payload,
       formSchema

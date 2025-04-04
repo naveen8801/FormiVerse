@@ -5,10 +5,12 @@ import type {
 } from "next";
 import type { NextAuthOptions, DefaultUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { getServerSession } from "next-auth";
 import User from "./models/User";
 import connectDB from "./helpers/ConnectDB";
-import { verifyPassword } from "./helpers/passwordManager";
+import { hasPassword, verifyPassword } from "./helpers/passwordManager";
+import { generateUsername } from "./lib/utils";
 // import sendEmail from "./utils/sendEmail";
 
 declare module "next-auth" {
@@ -17,6 +19,8 @@ declare module "next-auth" {
     _id: string | null;
     username: string | null;
     fullname: string | null;
+    email: string | null;
+    isGoogleUser: boolean;
   }
 
   interface Session {
@@ -25,6 +29,8 @@ declare module "next-auth" {
       id: string | null;
       username: string | null;
       fullname: string | null;
+      email: string | null;
+      isGoogleUser: boolean;
     };
   }
 }
@@ -39,7 +45,6 @@ export const config = {
   pages: {
     signIn: "/login",
   },
-
   providers: [
     CredentialsProvider({
       credentials: {
@@ -54,6 +59,7 @@ export const config = {
               { email: credentials.username },
               { username: credentials.username },
             ],
+            isGoogleUser: false,
           });
           if (user) {
             const res = await verifyPassword(
@@ -73,12 +79,23 @@ export const config = {
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
+    }),
   ],
   callbacks: {
     async session({
       session,
-      user,
       token,
+      user,
     }: {
       session: any;
       user: any;
@@ -88,16 +105,57 @@ export const config = {
         session.user.id = token.id;
         session.user.username = token.username;
         session.user.fullname = token.fullname;
+        session.user.isGoogleUser = token.isGoogleUser ?? false;
       }
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user._id;
         token.username = user.username;
         token.fullname = user.fullname;
+        token.isGoogleUser = false;
+      }
+      if (account?.provider === "google") {
+        const currUser = await User.findOne({
+          email: user?.email,
+          isGoogleUser: true,
+        });
+        token.id = currUser._id;
+        token.username = currUser.username;
+        token.fullname = currUser.fullname;
+        token.isGoogleUser = true;
       }
       return token;
+    },
+    async signIn({ account, profile, user }: any) {
+      if (account?.provider === "google" && profile) {
+        try {
+          const { name, email, given_name } = profile;
+          const currUser = await User.findOne({ email, isGoogleUser: true });
+          if (!currUser) {
+            // Create a new user
+            const hash = await hasPassword(account?.providerAccountId);
+            const newUser = await new User({
+              username: generateUsername(name || given_name || ""),
+              email: email,
+              password: hash,
+              fullname: name || given_name || "",
+              isGoogleUser: true,
+            }).save({
+              validateBeforeSave: true,
+            });
+            user = newUser;
+            return true;
+          }
+          user = currUser;
+          return true;
+        } catch (error) {
+          console.error("Error during google sign in", error);
+          return false;
+        }
+      }
+      return user;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

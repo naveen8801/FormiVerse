@@ -24,6 +24,10 @@ const User = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
     },
+    isGoogleUser: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
