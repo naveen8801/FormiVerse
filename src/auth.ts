@@ -117,6 +117,7 @@ export const config = {
         token.isGoogleUser = false;
       }
       if (account?.provider === "google") {
+        await connectDB();
         const currUser = await User.findOne({
           email: user?.email,
           isGoogleUser: true,
@@ -132,6 +133,7 @@ export const config = {
     async signIn({ account, profile, user }: any) {
       if (account?.provider === "google" && profile) {
         try {
+          await connectDB();
           const { name, email, given_name } = profile;
           const currUser = await User.findOne({ email, isGoogleUser: true });
           console.log("currUser inside sign in", currUser);
