@@ -10,6 +10,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Icons } from "./Icons";
 import { Card, CardContent } from "./ui/card";
+import { BorderBeam } from "./magicui/border-beam";
 
 interface IFormData {
   username: string;
@@ -73,7 +74,7 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
   };
 
   return (
-    <Card className="flex flex-col gap-4 w-full lg:w-1/3 px-8 py-12">
+    <Card className="relative flex flex-col gap-4 w-full lg:w-1/3 px-8 py-12">
       <div className="space-y-2">
         <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 ">
           Login to your account
@@ -126,6 +127,7 @@ const LoginForm: React.FC = (props: any): React.ReactElement => {
         )}{" "}
         Google
       </Button>
+      <BorderBeam duration={8} size={100} />
     </Card>
   );
 };

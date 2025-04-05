@@ -68,7 +68,7 @@ const ResponseReceivedTemplate: React.FC<Readonly<IProps>> = (
           </Text>
           <Hr style={hr} />
           <Text style={footer}>
-            © Copyright 2024 FormiVerse. All rights reserved
+            © Copyright 2025 FormiVerse. All rights reserved
           </Text>
         </Container>
       </Body>

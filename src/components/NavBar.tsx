@@ -29,6 +29,11 @@ const NavBar: React.FC<{ hideAuthRelatedInfo?: boolean }> = (
       <NavigationMenu className="gap-2">
         {isAuthenticated ? (
           <>
+            <Link href="/dashboard" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Dashboard
+              </NavigationMenuLink>
+            </Link>
             <NavigationMenuItem className="list-none">
               <NavigationMenuLink
                 onClick={() => {
@@ -49,6 +54,13 @@ const NavBar: React.FC<{ hideAuthRelatedInfo?: boolean }> = (
           </>
         ) : (
           <>
+            <NavigationMenuItem className="list-none">
+              <Link href="/" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Home
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
             <NavigationMenuItem className="list-none">
               <Link href="/signup" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
