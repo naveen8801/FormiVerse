@@ -28,9 +28,8 @@ import {
 } from "@radix-ui/react-popover";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import { formSchema } from "@/validation/form";
-import {
-  generateScriptEmbedCodeForForm,
-} from "@/lib/utils";
+import { generateScriptEmbedCodeForForm } from "@/lib/utils";
+import { ScriptCopyBtn } from "./magicui/script-copy-btn";
 
 interface IProp {
   user: any;
@@ -50,7 +49,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     },
   };
   const [open, setOpen] = useState<boolean>(false);
-  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [currentStep, setCurrentStep] = useState<number>(2);
   const [data, setData] = useState<IForm>(DEFAULT_DATA);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -275,34 +274,17 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
       );
     } else if (currentStep === 2) {
       return (
-        <div className="space-y-4">
+        <div className="space-y-4 w-full">
           {header}
-          <div className="flex items-center justify-end cursor-pointer">
-            <Popover>
-              <PopoverTrigger>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    const code = generateScriptEmbedCodeForForm(data?._id!);
-                    handleCopyCommand(code);
-                  }}
-                >
-                  <LuCopy size={18} />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                align="start"
-                className="bg-muted px-[1rem] py-[0.5rem] text-sm rounded"
-              >
-                Copied!
-              </PopoverContent>
-            </Popover>
-          </div>
-          <p className="text-sm text-slate-300">Embed Form using Script tag</p>
-          <div className="space-y-2 w-full bg-muted px-[0.3rem] py-[1rem] rounded">
-            <code className="w-full font-mono text-sm font-semibold">
-              {generateScriptEmbedCodeForForm(data?._id!)}
-            </code>
+          <div className="w-full">
+            <ScriptCopyBtn
+              className="w-[100%]"
+              showMultiplePackageOptions={false}
+              codeLanguage="html"
+              lightTheme="slack-dark"
+              darkTheme="slack-dark"
+              commandMap={{ html: generateScriptEmbedCodeForForm(data?._id!) }}
+            />
           </div>
         </div>
       );
@@ -378,7 +360,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
   // Handle close dialog
   const handleClose = (isOpen: boolean) => {
     if (open === false) {
-      setCurrentStep(0);
+      setCurrentStep(2);
       setData(DEFAULT_DATA);
     }
     setOpen(isOpen);
