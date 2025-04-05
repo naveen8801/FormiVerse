@@ -32,7 +32,6 @@
           width: 80%;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
           position: relative;
-          margin-top: 3rem;
         }
         
         .popup-close {
