@@ -6,14 +6,15 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const generateScriptEmbedCodeForForm = (formId: string) => {
-  return `<script
-        async
-        src="${process.env.NEXT_PUBLIC_APP_URL!}/magical-script.js"
-        data-form-id="${formId}"
-        data-trigger-element-id="formiverse-form" 
-        data-popup-header="Contact Me"
-        data-popup-height="550"
-      ></script>`;
+  return `
+  <script 
+    async 
+    src="${process.env.NEXT_PUBLIC_APP_URL!}/magical-script.js" 
+    data-form-id="${formId}" 
+    data-trigger-element-id="formiverse-form" 
+    data-popup-height="550">
+  </script>
+  `;
 };
 
 export function generateUsername(name: string) {

@@ -7,6 +7,8 @@ import { signUpFormSchema } from "@/validation/signUpForm";
 import { validateDataForZodSchema } from "@/helpers/zodValidator";
 import { useToast } from "@/components/ui/use-toast";
 import { handleUserSignUp } from "@/actions/authActions";
+import { Card } from "./ui/card";
+import { BorderBeam } from "./magicui/border-beam";
 
 interface IFormData {
   username: string;
@@ -72,7 +74,7 @@ const SignUpForm: React.FC = (): React.ReactElement => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full md:w-1/3">
+    <Card className="relative flex flex-col gap-4 w-full lg:w-1/3 px-8 py-12">
       <div className="space-y-2">
         <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 ">
           Create an account
@@ -116,7 +118,8 @@ const SignUpForm: React.FC = (): React.ReactElement => {
       <Button disabled={isLoading} onClick={handleSubmit}>
         Sign Up
       </Button>
-    </div>
+      <BorderBeam duration={8} size={100} />
+    </Card>
   );
 };
 

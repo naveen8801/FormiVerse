@@ -45,3 +45,44 @@ export const handleUserSignUp = async (data: {
     return { error: err?.toString() };
   }
 };
+
+export const handleUpdateUserProfile = async (
+  userId: string,
+  data: {
+    fullname: string;
+    password: string;
+  }
+): Promise<{ data?: any; error?: string }> => {
+  try {
+    await connectDB();
+    const { fullname, password } = data;
+    const payload: any = {};
+    if (fullname) {
+      payload["fullname"] = fullname;
+    }
+    if (password) {
+      const hash = await hasPassword(password);
+      payload["password"] = hash;
+    }
+    console.log({ payload, userId });
+    // Find user by ID and update
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      payload,
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return { error: "User not found" };
+    }
+
+    return { data: updatedUser?.toJSON() };
+  } catch (err: any) {
+    if (err.code === 11000 && err.keyPattern && err.keyPattern.username) {
+      return { error: "Username must be unique" };
+    } else if (err.code === 11000 && err.keyPattern && err.keyPattern.email) {
+      return { error: "Email must be unique" };
+    }
+    return { error: err?.toString() };
+  }
+};

@@ -23,3 +23,7 @@ export interface IFormResponse {
 export type IFormsList = IForm[];
 
 export type IIFormResponseList = IFormResponse[];
+
+export interface IProfileFormProp {
+  userData: any;
+}
