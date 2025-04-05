@@ -45,10 +45,6 @@ export default async function Dashboard() {
 
   return (
     <div className="w-full h-full">
-      {/* <div className="w-full flex flex-row items-center justify-end">
-        <CreateFormWizard user={session?.user} />
-      </div> */}
-
       {!data || data?.length === 0 ? (
         <EmptyState
           text="No Forms Found, Create one by Clicking on Create Form button"

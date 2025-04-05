@@ -60,7 +60,7 @@ export default function Home() {
         </span>
         becomes very easy.
       </p>
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 md:w-1/2 gap-4 text-center m-auto mt-20">
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 md:w-1/2 gap-4 text-center m-auto mt-20">
         {features.map((feature, index) => (
           <Card
             className="relative p-4 flex flex-col gap-2 items-center justify-center"
