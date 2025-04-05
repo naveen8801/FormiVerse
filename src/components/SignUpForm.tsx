@@ -114,7 +114,7 @@ const SignUpForm: React.FC = (): React.ReactElement => {
         }}
       />
       <Button disabled={isLoading} onClick={handleSubmit}>
-        Login
+        Sign Up
       </Button>
     </div>
   );

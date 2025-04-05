@@ -122,7 +122,6 @@ export const config = {
           email: user?.email,
           isGoogleUser: true,
         });
-        console.log("currUser inside jwt", currUser);
         token.id = currUser._id;
         token.username = currUser.username;
         token.fullname = currUser.fullname;
@@ -136,7 +135,6 @@ export const config = {
           await connectDB();
           const { name, email, given_name } = profile;
           const currUser = await User.findOne({ email, isGoogleUser: true });
-          console.log("currUser inside sign in", currUser);
           if (!currUser) {
             // Create a new user
             const hash = await hasPassword(account?.providerAccountId);
@@ -150,14 +148,12 @@ export const config = {
               validateBeforeSave: true,
             });
             user = newUser;
-            console.log("newUser inside sign in", newUser);
             // Send email on user create
             const { msg, error } = await sendEmail({
               receiverEmail: email,
               data: { name: name || given_name },
               emailType: "WELCOME",
             });
-            console.log("email sent for new user inside sign in");
             return true;
           }
           user = currUser;
