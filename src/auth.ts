@@ -11,7 +11,7 @@ import User from "./models/User";
 import connectDB from "./helpers/ConnectDB";
 import { hasPassword, verifyPassword } from "./helpers/passwordManager";
 import { generateUsername } from "./lib/utils";
-// import sendEmail from "./utils/sendEmail";
+import sendEmail from "./lib/sendEmail";
 
 declare module "next-auth" {
   interface User {
@@ -121,6 +121,7 @@ export const config = {
           email: user?.email,
           isGoogleUser: true,
         });
+        console.log("currUser inside jwt", currUser);
         token.id = currUser._id;
         token.username = currUser.username;
         token.fullname = currUser.fullname;
@@ -133,6 +134,7 @@ export const config = {
         try {
           const { name, email, given_name } = profile;
           const currUser = await User.findOne({ email, isGoogleUser: true });
+          console.log("currUser inside sign in", currUser);
           if (!currUser) {
             // Create a new user
             const hash = await hasPassword(account?.providerAccountId);
@@ -146,6 +148,14 @@ export const config = {
               validateBeforeSave: true,
             });
             user = newUser;
+            console.log("newUser inside sign in", newUser);
+            // Send email on user create
+            const { msg, error } = await sendEmail({
+              receiverEmail: email,
+              data: { name: name || given_name },
+              emailType: "WELCOME",
+            });
+            console.log("email sent for new user inside sign in");
             return true;
           }
           user = currUser;
