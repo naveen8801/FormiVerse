@@ -20,7 +20,7 @@ const MyThemeProvider: React.FC<IProp> = ({ children }): React.ReactElement => {
     <ThemeProvider
       enableSystem={true}
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="dark"
       disableTransitionOnChange
     >
       {children}
