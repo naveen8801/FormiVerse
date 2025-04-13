@@ -49,7 +49,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     },
   };
   const [open, setOpen] = useState<boolean>(false);
-  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [currentStep, setCurrentStep] = useState<number>(0);
   const [data, setData] = useState<IForm>(DEFAULT_DATA);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -360,7 +360,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
   // Handle close dialog
   const handleClose = (isOpen: boolean) => {
     if (open === false) {
-      setCurrentStep(1);
+      setCurrentStep(0);
       setData(DEFAULT_DATA);
     }
     setOpen(isOpen);
