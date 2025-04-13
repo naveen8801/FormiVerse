@@ -49,7 +49,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
     },
   };
   const [open, setOpen] = useState<boolean>(false);
-  const [currentStep, setCurrentStep] = useState<number>(2);
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [data, setData] = useState<IForm>(DEFAULT_DATA);
   const [isLoading, setIsLoading] = useState(false);
 
