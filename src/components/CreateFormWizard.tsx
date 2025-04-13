@@ -360,7 +360,7 @@ const CreateFormWizard: React.FC<IProp> = (props): React.ReactElement => {
   // Handle close dialog
   const handleClose = (isOpen: boolean) => {
     if (open === false) {
-      setCurrentStep(2);
+      setCurrentStep(1);
       setData(DEFAULT_DATA);
     }
     setOpen(isOpen);
