@@ -1,13 +1,13 @@
 import { handleGetUserForms } from "@/actions/formActions";
-import { auth, config } from "@/auth";
-import CreateFormWizard from "@/components/CreateFormWizard";
+import { config } from "@/auth";
 import { DataTable } from "@/components/DateTable";
 import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { FORMS_TABLE_DEFINITION } from "@/constants";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { LuMoreHorizontal } from "react-icons/lu";
+import { LuMoreHorizontal, LuPlusSquare } from "react-icons/lu";
 
 export default async function Dashboard() {
   // Get session from server
@@ -48,7 +48,14 @@ export default async function Dashboard() {
       {!data || data?.length === 0 ? (
         <EmptyState
           text="No Forms Found, Create one by Clicking on Create Form button"
-          action={<CreateFormWizard user={session?.user} />}
+          action={
+            <Button asChild variant="default">
+              <Link href="/dashboard/forms/create">
+                <LuPlusSquare size={18} className="mr-2" />
+                Create Form
+              </Link>
+            </Button>
+          }
         />
       ) : (
         <DataTable

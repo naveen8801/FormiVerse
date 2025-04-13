@@ -31,7 +31,8 @@ import {
 import { Button } from "./ui/button";
 import React from "react";
 import { Input } from "./ui/input";
-import CreateFormWizard from "./CreateFormWizard";
+import Link from "next/link";
+import { LuPlusSquare } from "react-icons/lu";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -87,7 +88,12 @@ export function DataTable<TData, TValue>({
           />
         )}
         <div className="flex items-center space-x-2 ml-auto">
-          <CreateFormWizard user={session?.user} />
+          <Button asChild variant="default">
+            <Link href="/dashboard/forms/create">
+              <LuPlusSquare size={18} className="mr-2" />
+              Create Form
+            </Link>
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
